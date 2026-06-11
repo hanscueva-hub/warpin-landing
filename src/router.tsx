@@ -12,6 +12,6 @@ export const getRouter = () => {
     defaultPreloadStaleTime: 0,
   });
 
-  // Trigger Vercel rebuild for public repository
+  // Trigger Vercel preview deployment
   return router;
 };
