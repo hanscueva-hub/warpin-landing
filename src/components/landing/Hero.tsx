@@ -45,7 +45,7 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.25 }}
           className="mt-6 max-w-2xl text-base text-gray-300 sm:text-lg md:text-xl"
         >
-          Publica lo que necesitas o descubre lo que pasa cerca: planes, taxis compartidos, objetos perdidos y ayuda rápida. Warpin conecta estudiantes en tiempo real sin revelar su ubicación exacta.
+          Publica lo que necesitas o descubre lo que pasa cerca: planes, taxis compartidos, objetos perdidos y ayuda rápida. Warpin conecta estudiantes en tiempo real con opción de ubicación exacta o protegida.
         </motion.p>
 
         <motion.div

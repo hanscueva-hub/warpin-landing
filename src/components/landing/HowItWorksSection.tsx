@@ -20,7 +20,7 @@ const cards: CardData[] = [
     num: "02",
     icon: Zap,
     title: "Publica",
-    desc: "Lanza un pin en segundos: un plan, una duda, una solicitud. Desaparece al expirar.",
+    desc: "Lanza un PIN en segundos: un plan, una duda, una solicitud. Desaparece al expirar.",
   },
   {
     num: "03",
@@ -38,7 +38,7 @@ const cards: CardData[] = [
     num: "05",
     icon: Shield,
     title: "Controla",
-    desc: "Tu ubicación nunca se revela. Bloquea, reporta, protege. Tú decides.",
+    desc: "Tú eliges: ubicación exacta o ubicación protegida (40m a la redonda). Bloquea, reporta, protege.",
   },
 ];
 

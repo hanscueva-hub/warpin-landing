@@ -5,7 +5,7 @@ import { ChevronDown } from 'lucide-react';
 const faqs = [
   {
     q: '¿WARPIN revela mi ubicación exacta?',
-    a: 'No. Tu ubicación exacta nunca se comparte. Los pines aparecen en un radio cercano a ti, con movimiento aleatorio que protege tu posición real.',
+    a: 'No obligatoriamente. Al publicar un PIN, puedes elegir entre compartir tu ubicación exacta o usar la ubicación protegida, la cual coloca tu PIN de forma aleatoria en un radio de 40 metros a la redonda para proteger tu privacidad.',
   },
   {
     q: '¿Quién puede ver mis publicaciones?',

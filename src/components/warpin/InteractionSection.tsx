@@ -9,9 +9,9 @@ import ucsmMap from "@/assets/ucsm-map.png";
 type StepKey = 0 | 1 | 2 | 3 | 4 | 5;
 
 const STEPS = [
-  { n: "01", icon: Eye,        t: "Descubre",        d: "Abre el mapa y mira pines/warps de estudiantes cerca en tiempo real." },
+  { n: "01", icon: Eye,        t: "Descubre",        d: "Abre el mapa y mira pines de estudiantes cerca en tiempo real." },
   { n: "02", icon: Filter,     t: "Elige categoría", d: "Filtra por tus intereses y simplifica tu búsqueda al instante." },
-  { n: "03", icon: Send,       t: "Publica",         d: "Lanza un pin/warp en segundos. Configura tu plan y hora de expiración." },
+  { n: "03", icon: Send,       t: "Publica",         d: "Lanza un PIN en segundos. Configura tu plan y hora de expiración." },
   { n: "04", icon: MessageSquare, t: "Comenta",      d: "Los comentarios son públicos para todos los que estén cerca. Interactúa sin fricciones." },
   { n: "05", icon: UserPlus,   t: "Conecta",         d: "Envía una solicitud para chatear en privado. Solo se abre si ambos aceptan." },
   { n: "06", icon: Inbox,      t: "Controla",        d: "Gestiona las solicitudes recibidas. Tú decides quién entra a tu chat privado." },
@@ -575,7 +575,7 @@ function ScreenPublish() {
         className="absolute inset-x-3 top-6 rounded-2xl border border-white/10 bg-[rgba(20,16,30,0.92)] p-3.5 backdrop-blur-xl"
       >
         <div className="mb-2.5 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wider text-cyan-400">
-          <Plus size={12} /> NUEVO WARP
+          <Plus size={12} /> NUEVO PIN
         </div>
         <div className="space-y-1.5">
           <TypeLine label="Título" text="Alguien para un taco? Somos 3 🎱" delay={0.2} />
@@ -593,7 +593,7 @@ function ScreenPublish() {
           className="mt-3.5 w-full rounded-xl py-2.5 text-[11px] font-bold text-white"
           style={{ background: "linear-gradient(135deg, var(--magenta), var(--cyan))" }}
         >
-          Publicar warp
+          Publicar PIN
         </motion.button>
       </motion.div>
       <motion.div
@@ -733,7 +733,7 @@ function ScreenConnect() {
 /* --- 06: Control --- */
 const REQUESTS = [
   { n: "Carlos R.",  c: "#ec4899", msg: "Hola, vi que public..." },
-  { n: "Valeria M.", c: "#22d3ee", msg: "Recien vi tu warp, todav..." },
+  { n: "Valeria M.", c: "#22d3ee", msg: "Recien vi tu pin, todav..." },
 ];
 
 function ScreenControl() {

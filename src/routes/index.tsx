@@ -208,7 +208,7 @@ function Hero() {
             Estás a <span className="text-cyan-400">500 metros</span> de un plan, <span className="text-cyan-400">una ayuda</span> o una respuesta.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Publica lo que necesitas o descubre lo que pasa cerca: planes, taxis compartidos, objetos perdidos y ayuda rápida. Warpin conecta estudiantes en tiempo real sin revelar su ubicación exacta.
+            Publica lo que necesitas o descubre lo que pasa cerca: planes, taxis compartidos, objetos perdidos y ayuda rápida. Warpin conecta estudiantes en tiempo real con opción de ubicación exacta o protegida.
           </p>
 
           <div className="mt-8 flex justify-center">
@@ -360,7 +360,7 @@ function Categories() {
 /* ---------------- Privacy ---------------- */
 function Privacy() {
   const items = [
-    { icon: MapPin, t: "Ubicación protegida", d: "Tu ubicación exacta nunca se muestra. Los pines usan movimiento seguro y ofuscado." },
+    { icon: MapPin, t: "Ubicación protegida", d: "Elige entre mostrar tu ubicación exacta o protegida (con desfase aleatorio de 40 metros)." },
     { icon: Timer, t: "Contenido efímero", d: "Todo desaparece al expirar. Sin huellas permanentes." },
     { icon: BadgeCheck, t: "Comunidad verificada", d: "Solo usuarios verificados con Google o teléfono pueden publicar o responder." },
     { icon: MessageCircleLock, t: "Chats bajo control", d: "Los mensajes privados solo se activan si ambos aceptan." },
@@ -368,7 +368,7 @@ function Privacy() {
   return (
     <Section id="privacidad"
       eyebrow={<><Lock size={12} className="inline -mt-0.5" /> Privacidad primero</>}
-      title={<>Seguridad <span className="text-gradient">en cada pin/warp</span></>}>
+      title={<>Seguridad <span className="text-gradient">en cada PIN</span></>}>
       <div className="grid gap-4 md:grid-cols-2">
         {items.map((it, i) => (
           <Card key={it.t} delay={i * 70} className="flex gap-4">
@@ -706,7 +706,7 @@ function FAQ() {
   const qs: { q: string; a: React.ReactNode }[] = [
     { q: "¿Qué es WARPIN?", a: "Una app de socialización local en tiempo real basada en geolocalización, pensada para universitarios menores de 30." },
     { q: "¿Quién puede unirse?", a: "Jóvenes menores de 30, verificados con Google o teléfono. El lanzamiento es exclusivo para UCSM y zonas cercanas." },
-    { q: "¿Cómo protegen mi privacidad?", a: "Tu ubicación exacta nunca se muestra. Usamos jittering para mover los pines dentro de un radio seguro y los chats requieren consentimiento mutuo." },
+    { q: "¿Cómo protegen mi privacidad?", a: "Tu ubicación exacta es opcional. Puedes optar por la ubicación protegida (desfase aleatorio de 40 metros) y los chats requieren consentimiento mutuo." },
     { q: "¿Cómo consigo acceso?", a: "Puedes unirte a nuestra Comunidad de WhatsApp para obtener códigos de acceso en los drops diarios, o completar la encuesta estratégica de Fundador Élite para recibir acceso anticipado prioritario." },
     { q: "¿Cuándo estará disponible?", a: "Estamos en beta cerrada. Lanzaremos la app inicial (MVP) en julio o agosto." },
     { q: "¿Necesito estar en UCSM para usarlo?", a: "Debes frecuentar la UCSM o zonas aledañas ya que inicialmente la app solo funcionará para usuarios geolocalizados 3km a la redonda. Esto asegura una comunidad activa y relevante desde el primer día." },

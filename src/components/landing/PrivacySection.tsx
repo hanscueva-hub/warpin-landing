@@ -4,8 +4,8 @@ import { Shield, Hourglass, MessagesSquare, ShieldCheck } from "lucide-react";
 const points = [
   {
     Icon: Shield,
-    title: "Ubicación difusa",
-    desc: "Tu ubicación real está protegida. Los pines flotan y se mueven aleatoriamente en un radio cercano a ti.",
+    title: "Ubicación protegida",
+    desc: "Tú decides si compartir tu ubicación exacta o usar la ubicación protegida, la cual coloca tu PIN aleatoriamente a 40 metros a la redonda.",
     accent: "oklch(0.68 0.31 340)",
   },
   {
