@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: '¿Puedo recibir mensajes de cualquier persona?',
-    a: 'No. Nadie puede escribirte libremente. Si publicas algo, recibes solicitudes de chat que tú decides aceptar o ignorar.',
+    a: 'Sí, cualquier persona puede enviarte un mensaje, pero solo una vez. A no ser que responda a uno de tus pines en el mapa, en cuyo caso puede enviarte un mensaje adicional. Por supuesto, tú siempre decides si aceptas o ignoras el chat.',
   },
   {
     q: '¿Qué significan las "Vibras" y la "Reputación" en mi perfil?',
@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     q: '¿Cuándo sale la app al público?',
-    a: 'Estamos en beta cerrada. Los primeros 500 fundadores tienen acceso anticipado. Los demás entrarán en los próximos drops. Únete a la Comunidad de WhatsApp para no perderte los anuncios.',
+    a: 'Estamos en beta cerrada y el lanzamiento oficial será en agosto. Los primeros 500 fundadores tienen acceso anticipado. Los demás entrarán en los próximos drops. Únete a la Comunidad de WhatsApp para no perderte los anuncios.',
   },
 ];
 

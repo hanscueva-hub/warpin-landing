@@ -5,28 +5,28 @@ const testimonials = [
     name: 'Lucía M.',
     role: '3er año · Ing. Sistemas · UCSM',
     quote:
-      'Encontré alguien para compartir taxi a Cayma en 2 minutos. Algo que en WhatsApp me hubiera tomado 20 mensajes.',
+      'Creo que me servirá muchísimo para encontrar gente con quien compartir taxi a Cayma saliendo de la U, sin tener que saturar los grupos ruidosos de WhatsApp.',
     avatar: 'linear-gradient(135deg, #22d3ee, #8b5cf6)',
   },
   {
     name: 'Andrés T.',
     role: '2do año · Derecho · UCSM',
     quote:
-      'Por fin algo que conecta sin el ruido de los grupos de WhatsApp. Publiqué que buscaba grupo de estudio y en 10 minutos tenía respuestas reales.',
+      'Me encantaría usarla para armar grupos de estudio rápido. Sería genial publicar que buscas gente para un trabajo y recibir respuestas directas al instante.',
     avatar: 'linear-gradient(135deg, #f472b6, #fb923c)',
   },
   {
     name: 'Camila R.',
     role: '4to año · Administración · UCSM',
     quote:
-      'Pedí un cargador tipo C y en 3 minutos alguien del salón de al lado me lo prestó. Esto es lo que faltaba.',
+      'Si me olvido un cargador o necesito apuntes urgentes, esto me salvará la vida. Es una excelente idea para pedir ayuda rápida a personas que están en el campus.',
     avatar: 'linear-gradient(135deg, #4ade80, #22d3ee)',
   },
   {
     name: 'Diego H.',
     role: '1er año · Medicina · UCSM',
     quote:
-      'Perdí mi carnet y lo publicé en WARPIN. A los 15 minutos alguien lo encontró cerca de la cafetería. Impresionante.',
+      'Pienso que servirá bastante para reportar objetos perdidos. Si pierdo mi carnet de la U, sería más fácil recuperarlo si alguien lo ve por la cafetería y lo publica.',
     avatar: 'linear-gradient(135deg, #a78bfa, #ec4899)',
   },
 ];
@@ -50,13 +50,13 @@ export function TestimonialsSection() {
 
         {/* Heading */}
         <motion.h2
-          className="text-center text-3xl font-extrabold text-white sm:text-4xl mb-12"
+          className="text-center text-3xl font-extrabold text-white sm:text-4xl mb-12 animate-reveal"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          Ya hay gente que lo vivió.{' '}
+          Lo que opina la comunidad.{' '}
           <span
             className="bg-clip-text text-transparent"
             style={{
@@ -68,11 +68,11 @@ export function TestimonialsSection() {
         </motion.h2>
 
         {/* Cards grid */}
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 px-4 md:px-0">
           {testimonials.map((t, i) => (
             <motion.div
               key={i}
-              className="glass rounded-3xl p-6 flex flex-col gap-4"
+              className="glass rounded-2xl md:rounded-3xl p-6 flex flex-col gap-4"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -80,7 +80,7 @@ export function TestimonialsSection() {
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
             >
               {/* Quote mark */}
-              <div className="text-5xl text-white/15 font-serif leading-none select-none">&ldquo;</div>
+              <div className="text-4xl text-white/15 font-serif leading-none select-none">&ldquo;</div>
 
               {/* Quote text */}
               <p className="text-sm leading-relaxed text-white/75 italic flex-1">{t.quote}</p>
