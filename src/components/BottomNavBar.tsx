@@ -1,18 +1,20 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Map, List, Plus, MessageSquare } from "lucide-react";
+import { Map, LayoutGrid, Plus, MessageSquare, User } from "lucide-react";
 import { cn } from "@/utils/cn";
 
 interface BottomNavBarProps {
   activeIndex: number;
   onChange: (index: number) => void;
   onFabClick?: () => void;
+  isDarkMode?: boolean;
 }
 
 export function BottomNavBar({
   activeIndex,
   onChange,
   onFabClick,
+  isDarkMode = true,
 }: BottomNavBarProps) {
   // Navigation tabs config (excluding FAB which is handled separately)
   // Index mapping:
@@ -24,35 +26,21 @@ export function BottomNavBar({
   
   const navItems = [
     { id: 0, label: "Mapa", icon: Map },
-    { id: 1, label: "Explorar", icon: List },
+    { id: 1, label: "Explorar", icon: LayoutGrid },
     { id: 2, label: "Crear", icon: null }, // FAB placeholder
     { id: 3, label: "Chats", icon: MessageSquare },
-    { id: 4, label: "Perfil", icon: null }, // Profile placeholder
+    { id: 4, label: "Perfil", icon: User },
   ];
 
   return (
     <div className="absolute bottom-0 left-0 right-0 px-4 pb-5 pt-2 z-50 pointer-events-none">
-      <div className="glass-panel mx-auto max-w-md h-16 rounded-2xl flex items-center justify-around px-2 relative pointer-events-auto shadow-2xl shadow-black/40">
+      <div className={cn(
+        "mx-auto max-w-md h-16 rounded-2xl flex items-center justify-around px-2 relative pointer-events-auto shadow-2xl transition-all duration-300 border",
+        isDarkMode 
+          ? "bg-[#141416]/90 border-white/10 shadow-black/60 backdrop-blur-md" 
+          : "bg-white/95 border-slate-200/80 shadow-slate-350/40 backdrop-blur-md"
+      )}>
         
-        {/* Active background pill tracker */}
-        <div className="absolute inset-0 flex justify-around px-2 items-center pointer-events-none">
-          {navItems.map((item, idx) => {
-            if (item.id === 2) return <div key="fab-space" className="w-12" />; // FAB gap
-            const isSelected = activeIndex === item.id;
-            return (
-              <div key={item.id} className="w-12 h-12 relative flex items-center justify-center">
-                {isSelected && (
-                  <motion.div
-                    layoutId="activeTabGlow"
-                    className="absolute inset-0 bg-white/5 rounded-xl border border-white/10"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </div>
-
         {/* Tab Buttons */}
         {navItems.map((item) => {
           // 1. Central FAB (+)
@@ -78,39 +66,6 @@ export function BottomNavBar({
             );
           }
 
-          // 2. Profile Avatar Tab
-          if (item.id === 4) {
-            const isSelected = activeIndex === 4;
-            return (
-              <button
-                key={item.id}
-                onClick={() => onChange(4)}
-                className="w-12 h-12 flex flex-col items-center justify-center relative select-none group"
-              >
-                {/* Empty circular avatar with outline */}
-                <div
-                  className={cn(
-                    "w-7 h-7 rounded-full border-2 transition-all duration-300 flex items-center justify-center overflow-hidden",
-                    isSelected
-                      ? "border-cyan-400 bg-cyan-400/20 shadow-[0_0_8px_rgba(0,229,255,0.4)]"
-                      : "border-white/40 group-hover:border-white/80 bg-white/5"
-                  )}
-                >
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/60 group-hover:bg-white transition-colors" />
-                </div>
-                
-                {/* Active indicator dot */}
-                {isSelected && (
-                  <motion.span
-                    layoutId="activeDot"
-                    className="w-1 h-1 rounded-full bg-cyan-400 mt-1 absolute bottom-1.5"
-                  />
-                )}
-              </button>
-            );
-          }
-
-          // 3. Standard Tabs (Map, Explore, Chats)
           const Icon = item.icon!;
           const isSelected = activeIndex === item.id;
           
@@ -118,24 +73,49 @@ export function BottomNavBar({
             <button
               key={item.id}
               onClick={() => onChange(item.id)}
-              className="w-12 h-12 flex flex-col items-center justify-center relative select-none group"
+              className="flex-1 flex flex-col items-center justify-center select-none group cursor-pointer relative"
             >
-              <Icon
-                className={cn(
-                  "w-6 h-6 transition-all duration-300",
-                  isSelected
-                    ? "text-cyan-400 scale-110 drop-shadow-[0_0_8px_rgba(0,229,255,0.4)]"
-                    : "text-white/60 group-hover:text-white group-hover:scale-105"
+              {/* Icon Container with Circle Indicator */}
+              <div className="w-10 h-10 relative flex items-center justify-center">
+                {isSelected && (
+                  <motion.div
+                    layoutId="activeTabGlow"
+                    className={cn(
+                      "absolute inset-0 rounded-full border transition-colors duration-300",
+                      isDarkMode 
+                        ? "bg-cyan-500/10 border-cyan-400/20 shadow-[0_0_8px_rgba(34,211,238,0.15)]" 
+                        : "bg-cyan-500/10 border-cyan-400/35 shadow-[0_0_6px_rgba(34,211,238,0.1)]"
+                    )}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
                 )}
-              />
-              
-              {/* Active indicator dot */}
-              {isSelected && (
-                <motion.span
-                  layoutId="activeDot"
-                  className="w-1 h-1 rounded-full bg-cyan-400 mt-1 absolute bottom-1.5"
-                />
-              )}
+                
+                <div className="relative z-10 flex items-center justify-center">
+                  <Icon
+                    className={cn(
+                      "w-5 h-5 transition-all duration-300",
+                      isSelected
+                        ? "text-cyan-500 scale-105"
+                        : (isDarkMode ? "text-white/60 group-hover:text-white" : "text-slate-400 group-hover:text-slate-700")
+                    )}
+                  />
+                  {item.id === 3 && (
+                    <span className="absolute -top-1.5 -right-2 bg-rose-500 text-white text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-md animate-pulse">
+                      {isDarkMode ? 4 : 3}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Label */}
+              <span className={cn(
+                "text-[9px] font-bold tracking-wide mt-0.5 transition-colors duration-300",
+                isSelected
+                  ? "text-cyan-500 font-extrabold"
+                  : (isDarkMode ? "text-white/40 group-hover:text-white/70" : "text-slate-400 group-hover:text-slate-650")
+              )}>
+                {item.label}
+              </span>
             </button>
           );
         })}

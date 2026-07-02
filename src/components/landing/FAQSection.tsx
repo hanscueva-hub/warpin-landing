@@ -24,6 +24,10 @@ const faqs = [
     a: 'No. Nadie puede escribirte libremente. Si publicas algo, recibes solicitudes de chat que tú decides aceptar o ignorar.',
   },
   {
+    q: '¿Qué significan las "Vibras" y la "Reputación" en mi perfil?',
+    a: 'Las Vibras son las reacciones (como "Me Gusta") que otros estudiantes le dan a tus pines en el mapa si les parece útil o genial tu publicación. La Reputación es tu puntuación de confiabilidad en el campus: sube a medida que creas pines útiles, ayudas a otros y recibes vibras de la comunidad.',
+  },
+  {
     q: '¿Cuándo sale la app al público?',
     a: 'Estamos en beta cerrada. Los primeros 500 fundadores tienen acceso anticipado. Los demás entrarán en los próximos drops. Únete a la Comunidad de WhatsApp para no perderte los anuncios.',
   },

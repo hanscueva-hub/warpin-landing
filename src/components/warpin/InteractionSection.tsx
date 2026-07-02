@@ -418,11 +418,11 @@ function ScreenDiscover() {
   }, []);
 
   const pins = [
-    { x: "24%", y: "22%", emoji: "🔑", tone: "gray" as const, msg: "Llaves olvidadas en biblioteca" },
-    { x: "38%", y: "78%", emoji: "🚨", tone: "red" as const, msg: "Mochila negra extraviada" },
-    { x: "18%", y: "65%", emoji: "🎉", tone: "magenta" as const, msg: "Previa medicina Yanahuara" },
-    { x: "42%", y: "52%", emoji: "📚", tone: "green" as const, msg: "Busco apuntes Cálculo I" },
-    { x: "32%", y: "34%", emoji: "🍻", tone: "orange" as const, msg: "Alguien taco? Somos 3 🎱" },
+    { x: "24%", y: "22%", emoji: "🚕", tone: "cyan" as const, msg: "Comparto taxi a Cayma" },
+    { x: "38%", y: "78%", emoji: "🚨", tone: "red" as const, msg: "¿Dónde queda el pabellón de medicina?" },
+    { x: "18%", y: "65%", emoji: "🎲", tone: "magenta" as const, msg: "Recomendaciones de música indie" },
+    { x: "42%", y: "52%", emoji: "🍻", tone: "orange" as const, msg: "Alguien almuerzo por la U?" },
+    { x: "32%", y: "34%", emoji: "💬", tone: "magenta" as const, msg: "Conversar un rato" },
   ];
 
   return (
@@ -468,12 +468,10 @@ function ScreenDiscover() {
 
 /* --- 02: Category --- */
 const CATEGORIES = [
-  { e: "👥", t: "Socializar", c: "#f97316" },
-  { e: "🚕", t: "Transporte", c: "#22d3ee" },
-  { e: "🔑", t: "Perdidos",   c: "#64748b" },
-  { e: "🎉", t: "Eventos",    c: "#ec4899" },
-  { e: "🚨", t: "Ayuda",      c: "#ef4444" },
-  { e: "📚", t: "Académico",  c: "#22c55e" },
+  { e: "👥", t: "Social",     c: "#FF5722" },
+  { e: "🚨", t: "Ayuda",      c: "#EF4444" },
+  { e: "🚕", t: "Transporte", c: "#00E5FF" },
+  { e: "🎲", t: "Random",     c: "#A855F7" },
 ];
 
 function ScreenCategory() {
@@ -485,9 +483,9 @@ function ScreenCategory() {
           <Pin x="22%" y="32%" emoji="🚕" tone="cyan" delay="0s" />
           <Pin x="68%" y="60%" emoji="🚕" tone="cyan" delay="0.5s" />
           <Pin x="72%" y="22%" emoji="🍻" tone="orange" faded />
-          <Pin x="78%" y="68%" emoji="📚" tone="green" faded />
-          <Pin x="18%" y="72%" emoji="🎉" tone="magenta" faded />
-          <Pin x="48%" y="16%" emoji="🔑" tone="gray" faded />
+          <Pin x="78%" y="68%" emoji="🚨" tone="red" faded />
+          <Pin x="18%" y="72%" emoji="🎲" tone="magenta" faded />
+          <Pin x="48%" y="16%" emoji="💬" tone="magenta" faded />
         </MiniMap>
       </div>
 
@@ -579,7 +577,7 @@ function ScreenPublish() {
         </div>
         <div className="space-y-1.5">
           <TypeLine label="Título" text="Alguien para un taco? Somos 3 🎱" delay={0.2} />
-          <TypeLine label="Categoría" text="🍻 Socializar" delay={0.6} />
+          <TypeLine label="Categoría" text="👥 Social" delay={0.6} />
           <TypeLine label="Expira en" text="45 min" delay={1.0} />
           <div className="grid grid-cols-2 gap-1.5 pt-0.5">
             <InteractiveToggle label="Permitir Chats" />

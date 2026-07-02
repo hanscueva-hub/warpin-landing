@@ -4,12 +4,21 @@ import { ChevronDown } from "lucide-react";
 
 const categories = [
   {
-    title: "👥 Socializar",
+    title: "👥 Social",
     accent: "oklch(0.75 0.2 50)",
     posts: [
       { user: "Lucia M.", text: "¿Alguien para almorzar por la U?", dist: "0.4 km" },
       { user: "Andrés T.", text: "Estoy libre una hora, ¿quién para conversar?", dist: "0.6 km" },
-      { user: "Camila R.", text: "¿Grupo para jugar vóley más tarde?", dist: "0.9 km" },
+      { user: "Camila R.", text: "¿Grupo para jugar fútbol/vóley más tarde?", dist: "0.9 km" },
+    ],
+  },
+  {
+    title: "🚨 Ayuda",
+    accent: "oklch(0.62 0.22 15)",
+    posts: [
+      { user: "Tomás V.", text: "¿Alguien tiene cargador tipo C que me preste?", dist: "0.1 km" },
+      { user: "Ana R.", text: "¿Dónde queda el pabellón de medicina?", dist: "0.05 km" },
+      { user: "Pablo M.", text: "¿Alguien tiene el apunte de cálculo?", dist: "0.3 km" },
     ],
   },
   {
@@ -22,30 +31,12 @@ const categories = [
     ],
   },
   {
-    title: "🔑 Perdidos / Encontrados",
-    accent: "oklch(0.85 0.02 250)",
+    title: "🎲 Random",
+    accent: "oklch(0.65 0.25 290)",
     posts: [
-      { user: "Sofía L.", text: "Encontré unos audífonos en la cafetería", dist: "0.3 km" },
-      { user: "Diego H.", text: "Perdí mi carnet cerca de la puerta principal", dist: "0.1 km" },
-      { user: "Valeria C.", text: "Vi una billetera en el salón, la dejé con seguridad", dist: "0.5 km" },
-    ],
-  },
-  {
-    title: "🎉 Eventos / Planes",
-    accent: "oklch(0.68 0.25 320)",
-    posts: [
-      { user: "Joaquin V.", text: "Hay previa cerca de la U a las 8", dist: "0.7 km" },
-      { user: "Isabel F.", text: "Feria en el campus hasta las 5", dist: "0.2 km" },
-      { user: "Pablo M.", text: "Torneo relámpago en la cancha", dist: "0.4 km" },
-    ],
-  },
-  {
-    title: "📚 Ayuda / Académico",
-    accent: "oklch(0.78 0.22 145)",
-    posts: [
-      { user: "Tomás V.", text: "¿Alguien tiene cargador tipo C?", dist: "0.1 km" },
-      { user: "Ana R.", text: "¿Dónde queda el aula 304?", dist: "0.05 km" },
-      { user: "Pablo M.", text: "¿Alguien tiene el apunte de cálculo?", dist: "0.3 km" },
+      { user: "Gael O.", text: "¿Alguien para charlar un rato sobre cualquier cosa?", dist: "0.5 km" },
+      { user: "Luciana F.", text: "Recomendaciones de música indie para estudiar", dist: "0.8 km" },
+      { user: "Matías K.", text: "¿Algún dato random de la UCSM que debería saber?", dist: "0.3 km" },
     ],
   },
 ];

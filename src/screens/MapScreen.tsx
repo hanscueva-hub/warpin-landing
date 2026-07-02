@@ -1,12 +1,11 @@
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
-import { MapPin, Compass, ShieldAlert, Award } from "lucide-react";
 import { WarpinPin } from "@/components/WarpinPin";
 import { cn } from "@/utils/cn";
 
 interface Pin {
   id: string;
-  category: "socializar" | "transporte" | "eventos" | "ayuda" | "academico" | "perdidos";
+  category: "social" | "ayuda" | "transporte" | "random";
   title: string;
   description: string;
   time: string;
@@ -24,12 +23,14 @@ interface MapScreenProps {
   pins: Pin[];
   onPinSelect: (pin: Pin) => void;
   selectedPinId: string | null;
+  isDarkMode?: boolean;
 }
 
 export function MapScreen({
   pins,
   onPinSelect,
   selectedPinId,
+  isDarkMode = true,
 }: MapScreenProps) {
   const constraintsRef = useRef<HTMLDivElement>(null);
 
@@ -55,6 +56,10 @@ export function MapScreen({
   const [mapOffset, setMapOffset] = useState({ x: -430, y: -430 });
   const [containerSize, setContainerSize] = useState({ width: 345, height: 600 });
 
+  // Throttle edge glow updates to once per animation frame for performance
+  const rafRef = useRef<number | null>(null);
+  const pendingOffset = useRef({ x: -430, y: -430 });
+
   useEffect(() => {
     if (constraintsRef.current) {
       const rect = constraintsRef.current.getBoundingClientRect();
@@ -64,16 +69,30 @@ export function MapScreen({
       });
     }
 
+    const scheduleUpdate = () => {
+      if (rafRef.current === null) {
+        rafRef.current = requestAnimationFrame(() => {
+          setMapOffset({ ...pendingOffset.current });
+          rafRef.current = null;
+        });
+      }
+    };
+
     const unsubscribeX = mapX.on("change", (latest) => {
-      setMapOffset((prev) => ({ ...prev, x: latest }));
+      pendingOffset.current.x = latest;
+      scheduleUpdate();
     });
     const unsubscribeY = mapY.on("change", (latest) => {
-      setMapOffset((prev) => ({ ...prev, y: latest }));
+      pendingOffset.current.y = latest;
+      scheduleUpdate();
     });
 
     return () => {
       unsubscribeX();
       unsubscribeY();
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
     };
   }, [mapX, mapY]);
 
@@ -224,7 +243,7 @@ export function MapScreen({
   return (
     <div 
       ref={constraintsRef} 
-      className="w-full h-full bg-[#0f1d2c] overflow-hidden relative select-none cursor-grab active:cursor-grabbing"
+      className={cn("w-full h-full overflow-hidden relative select-none cursor-grab active:cursor-grabbing transition-colors duration-300", isDarkMode ? "bg-[#0f1d2c]" : "bg-[#e2e8f0]")}
     >
       {/* 
         The Map Canvas (1200x1200px)
@@ -239,7 +258,7 @@ export function MapScreen({
           bottom: 0,
         }}
         style={{ x: mapX, y: mapY }}
-        className="w-[1200px] h-[1200px] bg-[#0f1d2c] relative overflow-hidden flex items-center justify-center animate-none"
+        className={cn("w-[1200px] h-[1200px] relative overflow-hidden flex items-center justify-center animate-none transition-colors duration-300", isDarkMode ? "bg-[#0f1d2c]" : "bg-[#e2e8f0]")}
       >
         
         {/* Cyberpunk grid streets system of Arequipa */}
@@ -253,7 +272,7 @@ export function MapScreen({
           {/* Grid background */}
           <defs>
             <pattern id="dark-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.02)" strokeWidth="1" />
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke={isDarkMode ? "rgba(255,255,255,0.02)" : "rgba(15,23,42,0.03)"} strokeWidth="1" />
             </pattern>
             {/* Máscara de foco radial 3km centrada en UCSM (595, 425) con radio 240px */}
             <mask id="radial-focus-mask">
@@ -270,24 +289,24 @@ export function MapScreen({
           <path
             d="M 100 -50 Q 250 350 200 650 T 400 1250"
             fill="none"
-            stroke="#11293a"
+            stroke={isDarkMode ? "#11293a" : "#b2d8f7"}
             strokeWidth="38"
             strokeLinecap="round"
           />
 
           {/* Main Avenues (Calles y avenidas principales) */}
           {/* Av. Metropolitana */}
-          <path d="M -50 450 L 1250 450" fill="none" stroke="#2e4960" strokeWidth="16" />
-          <path d="M -50 450 L 1250 450" fill="none" stroke="#0f1d2c" strokeWidth="2" strokeDasharray="6 8" />
+          <path d="M -50 450 L 1250 450" fill="none" stroke={isDarkMode ? "#2e4960" : "#94a3b8"} strokeWidth="16" />
+          <path d="M -50 450 L 1250 450" fill="none" stroke={isDarkMode ? "#0f1d2c" : "#f1f5f9"} strokeWidth="2" strokeDasharray="6 8" />
 
           {/* Av. Venezuela */}
-          <path d="M 500 -50 L 500 1250" fill="none" stroke="#2e4960" strokeWidth="14" />
+          <path d="M 500 -50 L 500 1250" fill="none" stroke={isDarkMode ? "#2e4960" : "#94a3b8"} strokeWidth="14" />
           
           {/* Av. Ejercito */}
-          <path d="M -50 200 C 350 250, 750 150, 1250 350" fill="none" stroke="#2e4960" strokeWidth="18" />
+          <path d="M -50 200 C 350 250, 750 150, 1250 350" fill="none" stroke={isDarkMode ? "#2e4960" : "#94a3b8"} strokeWidth="18" />
           
           {/* Diagonal Blocks Streets Grid */}
-          <g stroke="#2e4960" strokeWidth="4">
+          <g stroke={isDarkMode ? "#2e4960" : "#cbd5e1"} strokeWidth="4">
             {/* Horizontal-ish streets */}
             <line x1="-50" y1="100" x2="1250" y2="100" />
             <line x1="-50" y1="300" x2="1250" y2="300" />
@@ -305,15 +324,15 @@ export function MapScreen({
           </g>
 
           {/* Ovalos / Roundabouts */}
-          <circle cx="500" cy="450" r="24" fill="#0f1d2c" stroke="#2e4960" strokeWidth="4" />
-          <circle cx="200" cy="650" r="16" fill="#0f1d2c" stroke="#2e4960" strokeWidth="4" />
+          <circle cx="500" cy="450" r="24" fill={isDarkMode ? "#0f1d2c" : "#e2e8f0"} stroke={isDarkMode ? "#2e4960" : "#94a3b8"} strokeWidth="4" />
+          <circle cx="200" cy="650" r="16" fill={isDarkMode ? "#0f1d2c" : "#e2e8f0"} stroke={isDarkMode ? "#2e4960" : "#94a3b8"} strokeWidth="4" />
 
           {/* Foco radial 3km: oscurece y difumina todo fuera del radio de UCSM */}
           <rect
             width="1200"
             height="1200"
-            fill="#0f1d2c"
-            fillOpacity="0.65"
+            fill={isDarkMode ? "#0f1d2c" : "#cbd5e1"}
+            fillOpacity={isDarkMode ? "0.65" : "0.45"}
             filter="url(#svg-blur)"
             mask="url(#radial-focus-mask)"
           />
@@ -321,19 +340,55 @@ export function MapScreen({
 
         {/* Green Zones (Parks / Plaza) */}
         {/* Plaza de Yanahuara */}
-        <div className="absolute left-[360px] top-[240px] w-24 h-20 rounded-[28px] bg-[#194d4a] border border-[#194d4a]/50 flex items-center justify-center text-[9px] text-cyan-400/50 pointer-events-none font-bold">
+        <div className={cn(
+          "absolute left-[360px] top-[240px] w-24 h-20 rounded-[28px] flex items-center justify-center text-[9px] pointer-events-none font-bold transition-all border",
+          isDarkMode 
+            ? "bg-[#194d4a] border-[#194d4a]/50 text-cyan-400/50" 
+            : "bg-green-100/90 border-green-200/60 text-green-700/80"
+        )}>
           Yanahuara
         </div>
 
         {/* Plaza de Armas de Arequipa */}
-        <div className="absolute left-[480px] top-[540px] w-20 h-20 rounded-xl bg-[#194d4a] border border-[#194d4a]/50 flex items-center justify-center text-[9px] text-cyan-400/50 pointer-events-none font-bold">
+        <div className={cn(
+          "absolute left-[480px] top-[540px] w-20 h-20 rounded-xl flex items-center justify-center text-[9px] pointer-events-none font-bold transition-all border",
+          isDarkMode 
+            ? "bg-[#194d4a] border-[#194d4a]/50 text-cyan-400/50" 
+            : "bg-green-100/90 border-green-200/60 text-green-700/80"
+        )}>
           Plaza de Armas
         </div>
 
         {/* UCSM Campus (The epic center) */}
-        <div className="absolute left-[540px] top-[390px] w-[110px] h-[75px] rounded-[24px] bg-cyan-400/[0.02] border border-cyan-400/20 flex flex-col items-center justify-center text-center pointer-events-none select-none">
-          <span className="text-[10px] font-extrabold text-cyan-400/80 font-display">CAMPUS UCSM</span>
-          <span className="text-[7px] text-white/30 uppercase mt-0.5">Zona Cero</span>
+        <div className={cn(
+          "absolute left-[540px] top-[390px] w-[110px] h-[75px] rounded-[24px] flex flex-col items-center justify-center text-center pointer-events-none select-none transition-all border",
+          isDarkMode 
+            ? "bg-cyan-400/[0.02] border-cyan-400/20" 
+            : "bg-cyan-500/[0.04] border-cyan-300"
+        )}>
+          <span className={cn("text-[10px] font-extrabold font-display", isDarkMode ? "text-cyan-400/80" : "text-cyan-600")}>CAMPUS UCSM</span>
+          <span className={cn("text-[7px] uppercase mt-0.5", isDarkMode ? "text-white/30" : "text-slate-400")}>Zona Cero</span>
+        </div>
+
+        {/* Radar Sweep Scanning Layer */}
+        <div 
+          className="absolute left-[595px] top-[425px] rounded-full pointer-events-none z-0 overflow-hidden"
+          style={{
+            width: "360px",
+            height: "360px",
+            transform: "translate(-50%, -50%)",
+            border: "1px dashed rgba(6, 182, 212, 0.18)",
+            background: "radial-gradient(circle, transparent 40%, rgba(6, 182, 212, 0.02) 70%, rgba(6, 182, 212, 0.04) 100%)",
+          }}
+        >
+          {/* Sweeping Cone */}
+          <div 
+            className="w-full h-full animate-radar-sweep"
+            style={{
+              background: "conic-gradient(from 0deg, rgba(6, 182, 212, 0.22) 0deg, rgba(6, 182, 212, 0) 60deg, transparent 360deg)",
+              borderRadius: "50%",
+            }}
+          />
         </div>
 
         {/* User Current Position Dot */}
@@ -435,7 +490,12 @@ export function MapScreen({
       </div>
 
       {/* Info indicator in UI corner */}
-      <div className="absolute bottom-20 left-4 pointer-events-none z-10 bg-black/50 border border-white/5 px-2 py-1 rounded-xl text-[9px] text-white/50 backdrop-blur-md">
+      <div className={cn(
+        "absolute bottom-20 left-4 pointer-events-none z-10 px-2 py-1 rounded-xl text-[9px] backdrop-blur-md transition-all border",
+        isDarkMode 
+          ? "bg-black/50 border-white/5 text-white/50" 
+          : "bg-white/80 border-slate-200 text-slate-500 font-semibold"
+      )}>
         👋 Arrastra para explorar Arequipa
       </div>
     </div>
