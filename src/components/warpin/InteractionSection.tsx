@@ -119,7 +119,7 @@ export function InteractionSection() {
         <div className="reveal mb-12 text-center">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">Cómo funciona</p>
           <h2 className="font-display text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">
-            Seis pasos. <span className="text-gradient">Cero fricción.</span>
+            Tú publicas. <span className="text-gradient">El mundo lo ve.</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
             Desliza el celular o toca un paso para ver cómo se siente Warpin en vivo.

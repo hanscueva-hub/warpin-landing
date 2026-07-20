@@ -48,9 +48,6 @@ export function HowItWorksSection() {
       <div className="mx-auto max-w-5xl">
         {/* Header */}
         <div className="mb-12 flex flex-col items-center text-center">
-          <span className="mb-4 inline-block border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/60 rounded-full">
-            Cómo funciona
-          </span>
           <h2 className="font-display text-3xl font-bold text-white sm:text-4xl">
             Cinco pasos.{" "}
             <span className="bg-gradient-to-r from-cyan-400 to-fuchsia-500 bg-clip-text text-transparent">
