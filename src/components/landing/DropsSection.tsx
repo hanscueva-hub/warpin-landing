@@ -32,20 +32,6 @@ export function DropsSection() {
           <DropCard day="Próximos drops" slots={0} taken={0} mystery />
         </div>
 
-        {/* Next Drops strip */}
-        <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-center">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-white/40">
-            Próximos drops
-          </p>
-          <p className="text-4xl font-extrabold bg-gradient-to-r from-cyan-400 to-fuchsia-500 bg-clip-text text-transparent sm:text-5xl">
-            ???
-          </p>
-          <p className="mt-2 text-base font-semibold text-white">
-            Drops sorpresa o por invitación.
-          </p>
-          <p className="mt-1 text-sm text-white/60">Los fundadores tendrán el poder.</p>
-        </div>
-
         {/* CTA bottom */}
         <div className="mt-10 flex flex-col items-center gap-4 text-center">
           <motion.a

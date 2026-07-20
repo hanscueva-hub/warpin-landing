@@ -6,7 +6,7 @@ const items = [
   '🚕 Diego compartió taxi · Cayma',
   '📚 Lucía encontró apuntes de Cálculo',
   '🎉 Previa en Yanahuara · 2.1 km',
-  '✨ 156 fundadores ya asegurados',
+  '✨ +250 fundadores ya asegurados',
   '🔑 Llaves encontradas en cafetería',
   '🚨 Ayuda rápida resuelta en 4 min',
   '💜 Mateo se unió a la beta',

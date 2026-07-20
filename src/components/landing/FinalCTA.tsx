@@ -38,7 +38,7 @@ export function FinalCTA() {
               />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            ✨ +156 fundadores ya asegurados en Arequipa
+            ✨ +250 fundadores ya asegurados en Arequipa
           </div>
         </motion.div>
 
@@ -83,8 +83,8 @@ export function FinalCTA() {
 ───────────────────────────────────────────── */
 
 const explorarLinks = [
-  { label: "Cómo funciona", href: "#interaccion" },
-  { label: "Categorías", href: "#" },
+  { label: "Cómo funciona", href: "#como-funciona" },
+  { label: "Categorías", href: "#categorias" },
   { label: "Privacidad", href: "#privacidad" },
   { label: "Únete", href: "#fundador" },
 ];

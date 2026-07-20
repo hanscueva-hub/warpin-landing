@@ -4,6 +4,10 @@ import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
+    q: '¿Qué es WARPIN?',
+    a: 'WARPIN es una aplicación que estará disponible muy pronto en Google Play Store y App Store. Sirve para publicar cualquier tipo de PIN en el mapa en tiempo real, permitiendo que todas las personas a tu alrededor puedan verlo e interactuar al instante.',
+  },
+  {
     q: '¿WARPIN revela mi ubicación exacta?',
     a: 'No obligatoriamente. Al publicar un PIN, puedes elegir entre compartir tu ubicación exacta o usar la ubicación protegida, la cual coloca tu PIN de forma aleatoria en un radio de 40 metros a la redonda para proteger tu privacidad.',
   },

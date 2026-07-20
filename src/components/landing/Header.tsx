@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const navLinks = [
-  { label: "Cómo funciona", href: "#interaccion" },
+  { label: "Cómo funciona", href: "#como-funciona" },
   { label: "Categorías",    href: "#categorias" },
   { label: "Privacidad",    href: "#privacidad" },
   { label: "Únete",         href: "#fundador" },
