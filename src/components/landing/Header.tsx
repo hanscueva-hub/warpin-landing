@@ -44,7 +44,9 @@ export function Header() {
         {/* Right side: Entrar button + hamburger */}
         <div className="flex items-center gap-2">
           <a
-            href="#fundador"
+            href="https://chat.whatsapp.com/IK4zPo8yN4gIc9Y5RY1ecq"
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-full bg-white/10 px-3.5 py-1.5 text-[12px] font-semibold text-white shadow-[inset_0_1px_0_oklch(1_0_0/0.25)] transition-colors hover:bg-white/15"
           >
             Entrar

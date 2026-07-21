@@ -55,7 +55,9 @@ export function Hero() {
           className="mt-10"
         >
           <motion.a
-            href="#interaccion"
+            href="https://chat.whatsapp.com/IK4zPo8yN4gIc9Y5RY1ecq"
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
             className="ios-button group relative inline-flex items-center justify-center rounded-full px-9 py-4 text-base font-semibold text-white transition-shadow sm:px-11 sm:py-5 sm:text-lg"
@@ -108,7 +110,7 @@ export function Hero() {
 
       {/* Scroll hint */}
       <motion.a
-        href="#interaccion"
+        href="#como-funciona"
         aria-label="Desplázate para descubrir más"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
