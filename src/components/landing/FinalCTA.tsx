@@ -100,6 +100,11 @@ const comunidadLinks = [
     href: "https://tally.so/r/68PdWY",
     external: true,
   },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/warpin.app/",
+    external: true,
+  },
 ];
 
 export function Footer() {

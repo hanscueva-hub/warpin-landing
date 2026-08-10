@@ -33,7 +33,7 @@ const faqs = [
   },
   {
     q: '¿Cuándo sale la app al público?',
-    a: 'Estamos en beta cerrada y el lanzamiento oficial será en agosto. Los primeros 500 fundadores tienen acceso anticipado. Los demás entrarán en los próximos drops. Únete a la Comunidad de WhatsApp para no perderte los anuncios.',
+    a: 'Estamos en beta cerrada y el lanzamiento oficial será el 31 de agosto. Los primeros 500 fundadores tienen acceso anticipado. Los demás entrarán en los próximos drops. Únete a la Comunidad de WhatsApp para no perderte los anuncios.',
   },
 ];
 

@@ -22,14 +22,14 @@ export function DropsSection() {
         {/* Droplet Badge */}
         <div className="mx-auto mb-8 flex w-fit items-center gap-2 rounded-full glass-strong px-4 py-2 text-xs">
           <Droplet size={14} className="text-cyan-400 animate-pulse" />
-          <span className="font-semibold text-foreground">Oleada de drops: Muy pronto</span>
+          <span className="font-semibold text-foreground">Segunda oleada: en curso</span>
         </div>
 
         {/* Drops Grid */}
         <div className="grid gap-4 sm:grid-cols-3">
-          <DropCard day="Primera oleada" slots={500} taken={100} maxTaken={450} hot live />
-          <DropCard day="Segunda oleada" slots={500} taken={0} />
-          <DropCard day="Próximos drops" slots={0} taken={0} mystery />
+          <DropCard day="Primera oleada" slots={250} taken={250} hot closed />
+          <DropCard day="Segunda oleada" slots={250} taken={214} live />
+          <DropCard day="Lanzamiento oficial" slots={0} taken={0} unlimited />
         </div>
 
         {/* CTA bottom */}
@@ -60,7 +60,7 @@ export function DropsSection() {
   );
 }
 
-function DropCard({ day, slots, taken, maxTaken, hot, mystery, live }: { day: string; slots: number; taken: number; maxTaken?: number; hot?: boolean; mystery?: boolean; live?: boolean }) {
+function DropCard({ day, slots, taken, maxTaken, hot, unlimited, live, closed }: { day: string; slots: number; taken: number; maxTaken?: number; hot?: boolean; unlimited?: boolean; live?: boolean; closed?: boolean }) {
   const cap = maxTaken ?? slots - 5;
   const [t, setT] = useState(taken);
   const growingRef = useRef(true);
@@ -99,10 +99,10 @@ function DropCard({ day, slots, taken, maxTaken, hot, mystery, live }: { day: st
         </div>
       )}
       <div className="text-sm text-muted-foreground">{day}</div>
-      {mystery ? (
+      {unlimited ? (
         <>
-          <div className="mt-2 font-display text-4xl font-bold text-gradient">???</div>
-          <p className="mt-2 text-sm text-muted-foreground">Drops sorpresa o por invitación. Los fundadores tendrán el poder.</p>
+          <div className="mt-2 font-display text-4xl font-bold text-gradient">∞</div>
+          <p className="mt-2 text-sm text-muted-foreground">Abierto a todos los estudiantes de la UCSM.</p>
         </>
       ) : (
         <>
@@ -117,7 +117,9 @@ function DropCard({ day, slots, taken, maxTaken, hot, mystery, live }: { day: st
               </div>
               <div className="mt-2 flex justify-between text-xs text-muted-foreground">
                 <span className="tabular-nums">{current} reclamados</span>
-                <span className={`tabular-nums ${live ? "text-magenta font-semibold" : ""}`}>{slots - current} disponibles{live && " · en vivo"}</span>
+                <span className={`tabular-nums ${live ? "text-magenta font-semibold" : closed ? "text-white/40 font-semibold" : ""}`}>
+                  {slots - current} disponibles{live && " · en vivo"}{closed && " · Cerrado"}
+                </span>
               </div>
             </>
           )}
