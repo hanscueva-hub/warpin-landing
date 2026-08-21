@@ -96,8 +96,8 @@ const comunidadLinks = [
     external: true,
   },
   {
-    label: "Encuesta Fundador Élite",
-    href: "https://tally.so/r/68PdWY",
+    label: "Postular mi universidad",
+    href: "https://tally.so/r/WOqWOk",
     external: true,
   },
   {
