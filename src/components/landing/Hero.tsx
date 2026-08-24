@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { BackgroundBlobs } from "./BackgroundBlobs";
+import warpinLogo from "@/assets/warpin-logo.png";
 
 const avatars = [
   "linear-gradient(135deg,#f472b6,#a855f7)",
@@ -14,10 +15,28 @@ export function Hero() {
       <BackgroundBlobs />
       <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
         <motion.div
+          initial={{ opacity: 0, scale: 0.8, y: -14 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="relative mb-5"
+        >
+          <span
+            aria-hidden
+            className="absolute -inset-6 -z-10 rounded-full opacity-70 blur-2xl"
+            style={{ background: "radial-gradient(circle, var(--magenta), var(--cyan), transparent 70%)" }}
+          />
+          <img
+            src={warpinLogo}
+            alt="WARPIN"
+            className="h-20 w-20 rounded-2xl object-cover shadow-[inset_0_1px_0_oklch(1_0_0/0.3),0_8px_32px_-4px_oklch(0.6_0.23_305/0.6)] sm:h-24 sm:w-24"
+          />
+        </motion.div>
+
+        <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 mt-4 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium text-white/85"
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="mb-6 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium text-white/85"
         >
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full rounded-full bg-neon-magenta opacity-75 animate-pulse-ring" />

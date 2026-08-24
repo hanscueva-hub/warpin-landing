@@ -1,6 +1,6 @@
-'use client';
-
 import { motion } from 'framer-motion';
+import { GraduationCap } from 'lucide-react';
+import campusPhoto from '@/assets/warpin-campus.jpg';
 
 const containerVariants = {
   hidden: {},
@@ -20,30 +20,20 @@ const fadeUpVariants = {
   },
 };
 
-const statCards = [
+const infoCards = [
   {
-    emoji: '🎓',
-    stat: 'UCSM',
-    label: 'Primer campus',
+    title: 'El campus como punto de partida',
+    body: 'El lanzamiento será exclusivo en la UCSM y sus zonas comerciales cercanas. Queremos construir una comunidad real, no un mar de extraños.',
   },
   {
-    emoji: '📍',
-    stat: 'Arequipa, Perú',
-    label: 'Ciudad de lanzamiento',
-  },
-  {
-    emoji: '🔒',
-    stat: '500 cupos',
-    label: 'Primera generación',
+    title: 'Pensado para tu día a día',
+    body: 'WARPIN nace para resolver lo que pasa entre clases, en el patio, al salir de la U: planes, taxis, apuntes y conexiones reales.',
   },
 ];
 
 export function ZonaCeroSection() {
   return (
-    <section
-      id="zona-cero"
-      className="px-6 py-16 sm:py-20 relative overflow-hidden"
-    >
+    <section id="zona-cero" className="px-6 py-16 sm:py-20 relative overflow-hidden">
       {/* Subtle grid background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"
@@ -55,84 +45,90 @@ export function ZonaCeroSection() {
       />
 
       <motion.div
-        className="mx-auto max-w-4xl text-center"
+        className="mx-auto max-w-5xl"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
       >
         {/* Badge */}
-        <motion.div
-          variants={fadeUpVariants}
-          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-white/80 mb-6"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-fuchsia-500 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-fuchsia-500" />
+        <motion.div variants={fadeUpVariants} className="flex justify-center mb-6">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-white/80">
+            Zona Cero
           </span>
-          ⚡ Beta activa — solo por invitación
         </motion.div>
 
         {/* Heading */}
         <motion.h2
           variants={fadeUpVariants}
-          className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight mb-4"
+          className="text-center text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight mb-12"
         >
-          El primer campus.
+          Empezamos donde tú estás:
           <br />
-          <span className="bg-gradient-to-r from-fuchsia-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
-            La primera ola.
+          <span className="bg-gradient-to-r from-fuchsia-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
+            UCSM
           </span>
         </motion.h2>
 
-        {/* Subtitle */}
-        <motion.p
-          variants={fadeUpVariants}
-          className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto"
-        >
-          WARPIN comienza en la UCSM — Arequipa, Perú. Los primeros 500
-          fundadores escribirán la historia de la app.
-        </motion.p>
-
-        {/* Stat cards */}
-        <motion.div
-          variants={fadeUpVariants}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10"
-        >
-          {statCards.map(({ emoji, stat, label }) => (
-            <div
-              key={label}
-              className="rounded-3xl glass p-6 text-center"
-            >
-              <div className="text-3xl mb-2">{emoji}</div>
-              <div className="text-lg font-bold text-white">{stat}</div>
-              <div className="text-xs text-white/50 mt-1">{label}</div>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Separator */}
-        <motion.hr
-          variants={fadeUpVariants}
-          className="mt-10 border-t border-white/8"
-        />
-
-        {/* Below separator */}
-        <motion.div
-          variants={fadeUpVariants}
-          className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <p className="text-sm text-white/60">¿Eres de otra universidad?</p>
-          <a
-            href="https://tally.so/r/WOqWOk"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Postular campus a lista de espera"
-            className="rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
+        {/* Photo + info grid */}
+        <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
+          {/* Campus photo */}
+          <motion.div
+            variants={fadeUpVariants}
+            className="relative overflow-hidden rounded-3xl border border-white/10 min-h-[260px]"
           >
-            Postular mi campus →
-          </a>
-        </motion.div>
+            <img
+              src={campusPhoto}
+              alt="Vista aérea nocturna del campus de la UCSM en Arequipa"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 flex items-center gap-3 p-5">
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm">
+                <GraduationCap className="h-4.5 w-4.5 text-cyan-400" />
+              </span>
+              <div>
+                <p className="text-sm font-bold text-white">Universidad Católica de Santa María</p>
+                <p className="text-xs text-white/60">Arequipa · Punto de partida oficial</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Info cards */}
+          <div className="flex flex-col gap-4">
+            {infoCards.map(({ title, body }) => (
+              <motion.div
+                key={title}
+                variants={fadeUpVariants}
+                className="rounded-2xl glass p-6"
+              >
+                <h3 className="text-base font-bold text-white">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/60">{body}</p>
+              </motion.div>
+            ))}
+
+            <motion.div
+              variants={fadeUpVariants}
+              className="flex flex-1 flex-col justify-between rounded-2xl glass p-6"
+            >
+              <div>
+                <h3 className="text-base font-bold text-white">Próximas zonas</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/60">
+                  Después de UCSM, expandimos campus por campus. ¿Quieres traer WARPIN al tuyo?
+                </p>
+              </div>
+              <a
+                href="https://tally.so/r/WOqWOk"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Postular campus a lista de espera"
+                className="mt-4 inline-flex w-fit items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10 transition-colors"
+              >
+                Postular mi campus →
+              </a>
+            </motion.div>
+          </div>
+        </div>
       </motion.div>
     </section>
   );

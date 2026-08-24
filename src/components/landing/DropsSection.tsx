@@ -27,8 +27,8 @@ export function DropsSection() {
 
         {/* Drops Grid */}
         <div className="grid gap-4 sm:grid-cols-3">
-          <DropCard day="Primera oleada" slots={250} taken={250} hot closed />
-          <DropCard day="Segunda oleada" slots={250} taken={214} live />
+          <DropCard day="Primera oleada" slots={500} taken={500} hot closed />
+          <DropCard day="Segunda oleada" slots={500} taken={264} maxTaken={284} live />
           <DropCard day="Lanzamiento oficial" slots={0} taken={0} unlimited />
         </div>
 

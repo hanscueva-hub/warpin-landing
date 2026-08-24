@@ -90,8 +90,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "WARPIN" },
       { name: "twitter:description", content: "WARPIN conecta estudiantes cerca de ti en tiempo real desde una app móvil." },
-      { property: "og:image", content: "https://warpin.app/warpin-logo.png" },
-      { name: "twitter:image", content: "https://warpin.app/warpin-logo.png" },
+      { property: "og:image", content: "https://warpin.app/og-banner.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:image", content: "https://warpin.app/og-banner.png" },
     ],
     links: [
       // Canonical is declared per-route (see routes/index.tsx, routes/app.tsx).
