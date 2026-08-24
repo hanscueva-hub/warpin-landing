@@ -34,15 +34,15 @@ export async function fetchPublicPin(pinId: string): Promise<PublicPin | null> {
   // Latin-1, así que un carácter invisible hace que fetch lance
   // "Cannot convert argument to a ByteString" — un error que no menciona la
   // variable por ningún lado y cuesta rastrear.
-  const anonKey = process.env.SUPABASE_ANON_KEY?.trim();
+  // Se descarta todo lo que un JWT no puede contener. Un valor pegado a mano
+  // arrastra saltos de línea, espacios o comillas invisibles, y como las
+  // cabeceras HTTP solo admiten Latin-1, uno solo de esos caracteres hace que
+  // fetch lance "Cannot convert argument to a ByteString" — un error que no
+  // menciona la variable por ningún lado. Limpiar es seguro: un JWT válido
+  // solo usa [A-Za-z0-9._-], así que esto nunca puede romper una clave buena.
+  const anonKey = process.env.SUPABASE_ANON_KEY?.replace(/[^A-Za-z0-9._-]/g, "");
   if (!anonKey) {
     console.error("Falta SUPABASE_ANON_KEY en las variables de entorno");
-    return null;
-  }
-  if (!/^[A-Za-z0-9._-]+$/.test(anonKey)) {
-    console.error(
-      "SUPABASE_ANON_KEY tiene caracteres que no son de un JWT; revisa cómo se pegó en Vercel",
-    );
     return null;
   }
 
