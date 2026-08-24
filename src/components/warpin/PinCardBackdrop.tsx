@@ -8,39 +8,65 @@
 export function PinCardBackdrop() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Trama de calles, borrosa: lee como mapa sin serlo */}
+      {/* Trama de calles: lee como mapa nocturno sin serlo */}
       <svg
-        className="absolute inset-0 size-full opacity-[0.28] blur-[3px]"
-        viewBox="0 0 400 800"
+        className="absolute inset-0 size-full opacity-90 blur-[1px]"
+        viewBox="0 0 400 500"
         preserveAspectRatio="xMidYMid slice"
       >
-        <rect width="400" height="800" fill="#0E1420" />
-        <g stroke="#8FA3C8" strokeOpacity="0.5" strokeWidth="1.4" fill="none">
-          <path d="M-20 120 H420 M-20 300 H420 M-20 470 H420 M-20 640 H420" />
-          <path d="M70 -20 V820 M180 -20 V820 M290 -20 V820" />
-          <path d="M-20 210 L200 380 L420 300" />
-          <path d="M-20 560 L140 660 L420 610" />
-          <path d="M240 -20 L320 180 L280 420 L360 640" />
+        <rect width="400" height="500" fill="#0D1622" />
+
+        {/* Manzanas */}
+        <g fill="#17243A">
+          <rect x="26" y="34" width="120" height="86" rx="5" />
+          <rect x="166" y="34" width="96" height="86" rx="5" />
+          <rect x="282" y="34" width="104" height="60" rx="5" />
+          <rect x="26" y="146" width="120" height="70" rx="5" />
+          <rect x="166" y="146" width="96" height="70" rx="5" />
+          <rect x="282" y="122" width="104" height="94" rx="5" />
+          <rect x="26" y="300" width="96" height="88" rx="5" />
+          <rect x="142" y="300" width="130" height="60" rx="5" />
+          <rect x="292" y="300" width="94" height="88" rx="5" />
+          <rect x="26" y="412" width="150" height="66" rx="5" />
+          <rect x="196" y="412" width="190" height="66" rx="5" />
         </g>
-        <g fill="#6E82A8" fillOpacity="0.22">
-          <rect x="86" y="136" width="78" height="60" rx="4" />
-          <rect x="196" y="136" width="78" height="60" rx="4" />
-          <rect x="86" y="318" width="78" height="52" rx="4" />
-          <rect x="196" y="486" width="78" height="66" rx="4" />
-          <rect x="306" y="318" width="60" height="60" rx="4" />
+
+        {/* Avenidas */}
+        <g stroke="#2F4666" strokeWidth="9" strokeLinecap="round" fill="none">
+          <path d="M-10 133 H410" />
+          <path d="M-10 287 H410" />
+          <path d="M-10 400 H410" />
+          <path d="M155 -10 V500" />
+          <path d="M275 -10 V500" />
         </g>
-        {/* Un parque y un río, para que no parezca una cuadrícula */}
-        <path d="M20 470 Q120 500 200 470 T400 500 L400 560 Q260 540 180 560 T20 540 Z" fill="#3E6B57" fillOpacity="0.3" />
-        <path d="M-20 700 Q120 660 220 720 T420 690" stroke="#3B6E9B" strokeOpacity="0.45" strokeWidth="14" fill="none" />
+
+        {/* Calles menores */}
+        <g stroke="#243855" strokeWidth="3.5" fill="none">
+          <path d="M-10 226 H410 M-10 466 H410" />
+          <path d="M78 -10 V500 M345 -10 V500" />
+          <path d="M-10 60 L155 133 M275 287 L410 232" />
+        </g>
+
+        {/* Parque y río, para que no parezca una cuadrícula */}
+        <path
+          d="M20 232 Q110 252 190 236 T392 258 L392 292 Q250 276 176 292 T20 280 Z"
+          fill="#1E4438"
+        />
+        <path
+          d="M-10 356 Q110 328 214 372 T410 348"
+          stroke="#1C3E5E"
+          strokeWidth="16"
+          fill="none"
+        />
       </svg>
 
       {/* Halos de color de la marca */}
-      <div className="absolute -left-24 top-[12%] size-72 rounded-full bg-[#00E5FF] opacity-[0.16] blur-[90px]" />
-      <div className="absolute -right-20 top-[38%] size-80 rounded-full bg-[#EC4899] opacity-[0.20] blur-[100px]" />
-      <div className="absolute bottom-[6%] left-[18%] size-72 rounded-full bg-[#8B5CF6] opacity-[0.16] blur-[95px]" />
+      <div className="absolute -left-16 top-[8%] size-56 rounded-full bg-[#00E5FF] opacity-25 blur-[70px]" />
+      <div className="absolute -right-14 top-[45%] size-64 rounded-full bg-[#EC4899] opacity-30 blur-[80px]" />
+      <div className="absolute -bottom-10 left-[22%] size-56 rounded-full bg-[#8B5CF6] opacity-25 blur-[75px]" />
 
-      {/* Viñeta: hunde los bordes para que la tarjeta destaque */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_25%,rgba(6,8,14,0.82)_100%)]" />
+      {/* Viñeta suave: hunde los bordes sin tapar el mapa */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(6,8,14,0.6)_100%)]" />
     </div>
   );
 }
