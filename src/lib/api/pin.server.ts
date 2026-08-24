@@ -28,9 +28,21 @@ export async function fetchPublicPin(pinId: string): Promise<PublicPin | null> {
 
   // Leer dentro de la función, no en el ámbito del módulo: en algunos
   // entornos las variables se enlazan por petición.
-  const anonKey = process.env.SUPABASE_ANON_KEY;
+  //
+  // El .trim() no sobra: un valor pegado a mano en el panel de Vercel suele
+  // arrastrar un salto de línea o un espacio. Las cabeceras HTTP solo admiten
+  // Latin-1, así que un carácter invisible hace que fetch lance
+  // "Cannot convert argument to a ByteString" — un error que no menciona la
+  // variable por ningún lado y cuesta rastrear.
+  const anonKey = process.env.SUPABASE_ANON_KEY?.trim();
   if (!anonKey) {
     console.error("Falta SUPABASE_ANON_KEY en las variables de entorno");
+    return null;
+  }
+  if (!/^[A-Za-z0-9._-]+$/.test(anonKey)) {
+    console.error(
+      "SUPABASE_ANON_KEY tiene caracteres que no son de un JWT; revisa cómo se pegó en Vercel",
+    );
     return null;
   }
 
