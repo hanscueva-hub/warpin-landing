@@ -11,19 +11,72 @@ import { ZonaCeroSection } from "@/components/landing/ZonaCeroSection";
 import { DropsSection } from "@/components/landing/DropsSection";
 import { FounderSection } from "@/components/landing/FounderSection";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
-import { FAQSection } from "@/components/landing/FAQSection";
+import { FAQSection, faqs } from "@/components/landing/FAQSection";
 import { FinalCTA, Footer } from "@/components/landing/FinalCTA";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
 import { useReveal } from "@/hooks/use-reveal";
 
+const SITE_URL = "https://www.warpin.app";
+const PAGE_TITLE = "WARPIN — App social en tiempo real para universitarios | Arequipa";
+const PAGE_DESCRIPTION =
+  "Conoce estudiantes cerca de ti en tiempo real. Publica planes, comparte taxi, pide ayuda o encuentra objetos perdidos en tu campus. Beta en la UCSM, Arequipa.";
+
+/* Structured data — helps Google show rich results (FAQ dropdowns, app info). */
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "WARPIN",
+      url: SITE_URL,
+      logo: `${SITE_URL}/warpin-logo.png`,
+      sameAs: ["https://www.instagram.com/warpin.app/"],
+      areaServed: { "@type": "City", name: "Arequipa", addressCountry: "PE" },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "WARPIN",
+      description: PAGE_DESCRIPTION,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      inLanguage: "es-PE",
+    },
+    {
+      "@type": "MobileApplication",
+      name: "WARPIN",
+      applicationCategory: "SocialNetworkingApplication",
+      operatingSystem: "Android, iOS",
+      description:
+        "App de socialización hiperlocal en tiempo real para universitarios: publica un PIN en el mapa y conecta con estudiantes a tu alrededor.",
+      url: SITE_URL,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      offers: { "@type": "Offer", price: "0", priceCurrency: "PEN" },
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: faqs.map(({ q, a }) => ({
+        "@type": "Question",
+        name: q,
+        acceptedAnswer: { "@type": "Answer", text: a },
+      })),
+    },
+  ],
+};
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "WARPIN — Tu radar social en tiempo real" },
-      { name: "description", content: "App de socialización local en tiempo real para universitarios menores de 30. Beta cerrada en UCSM." },
-      { property: "og:title", content: "WARPIN — Tu radar social en tiempo real" },
-      { property: "og:description", content: "Conecta al instante con personas cerca de ti. Únete a la beta cerrada." },
+      { title: PAGE_TITLE },
+      { name: "description", content: PAGE_DESCRIPTION },
+      { property: "og:title", content: PAGE_TITLE },
+      { property: "og:description", content: PAGE_DESCRIPTION },
+      { property: "og:url", content: `${SITE_URL}/` },
+      { name: "twitter:title", content: PAGE_TITLE },
+      { name: "twitter:description", content: PAGE_DESCRIPTION },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/` }],
   }),
   component: Landing,
 });
@@ -35,6 +88,10 @@ function Landing() {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <ScrollProgress />
       <Header />
       <main className="relative z-10">

@@ -331,7 +331,7 @@ function MiniMap({ children }: { children?: React.ReactNode }) {
       {/* Dark styled Google Maps image */}
       <img
         src={ucsmMap}
-        alt="UCSM Map"
+        alt="Mapa del campus de la UCSM en Arequipa con pines de estudiantes cerca"
         className="absolute inset-0 h-full w-full object-cover opacity-38"
         style={{
           filter: "invert(1) hue-rotate(215deg) brightness(0.42) contrast(1.35) saturate(0.85)",

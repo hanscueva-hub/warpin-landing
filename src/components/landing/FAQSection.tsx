@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
-const faqs = [
+export const faqs = [
   {
     q: '¿Qué es WARPIN?',
     a: 'WARPIN es una aplicación que estará disponible muy pronto en Google Play Store y App Store. Sirve para publicar cualquier tipo de PIN en el mapa en tiempo real, permitiendo que todas las personas a tu alrededor puedan verlo e interactuar al instante.',

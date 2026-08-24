@@ -79,19 +79,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "WARPIN" },
-      { name: "description", content: "WARPIN connects young adults locally in real-time via a mobile app." },
+      { name: "description", content: "WARPIN conecta estudiantes cerca de ti en tiempo real desde una app móvil." },
       { name: "theme-color", content: "#16111f" },
+      { property: "og:site_name", content: "WARPIN" },
+      { property: "og:locale", content: "es_PE" },
       { property: "og:title", content: "WARPIN" },
-      { property: "og:description", content: "WARPIN connects young adults locally in real-time via a mobile app." },
+      { property: "og:description", content: "WARPIN conecta estudiantes cerca de ti en tiempo real desde una app móvil." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://www.warpin.app/" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "WARPIN" },
-      { name: "twitter:description", content: "WARPIN connects young adults locally in real-time via a mobile app." },
+      { name: "twitter:description", content: "WARPIN conecta estudiantes cerca de ti en tiempo real desde una app móvil." },
       { property: "og:image", content: "https://www.warpin.app/warpin-logo.png" },
       { name: "twitter:image", content: "https://www.warpin.app/warpin-logo.png" },
     ],
     links: [
+      // Canonical is declared per-route (see routes/index.tsx, routes/app.tsx).
+      // Declaring it here too would emit two conflicting <link rel="canonical">.
       { rel: "icon", type: "image/png", href: "/warpin-logo.png" },
+      { rel: "apple-touch-icon", href: "/warpin-logo.png" },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -106,7 +112,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         <HeadContent />
       </head>
