@@ -11,7 +11,10 @@ const avatars = [
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24 pb-16">
+    <section
+      className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24 pb-16"
+      style={{ background: "var(--gradient-hero)" }}
+    >
       <BackgroundBlobs />
       <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
         <motion.div
@@ -52,9 +55,9 @@ export function Hero() {
           className="text-balance text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
         >
           Estás a{" "}
-          <span className="text-gradient-vibrant">500 metros de </span>
+          <span className="text-gradient">500 metros de </span>
           un plan,
-          <span className="text-gradient-vibrant"> una ayuda </span>
+          <span className="text-gradient"> una ayuda </span>
           o una respuesta.
         </motion.h1>
 
