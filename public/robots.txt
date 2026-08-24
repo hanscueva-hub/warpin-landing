@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.warpin.app/sitemap.xml
+Sitemap: https://warpin.app/sitemap.xml

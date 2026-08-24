@@ -16,7 +16,7 @@ import { FinalCTA, Footer } from "@/components/landing/FinalCTA";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
 import { useReveal } from "@/hooks/use-reveal";
 
-const SITE_URL = "https://www.warpin.app";
+const SITE_URL = "https://warpin.app";
 const PAGE_TITLE = "WARPIN — App social en tiempo real para universitarios | Arequipa";
 const PAGE_DESCRIPTION =
   "Conoce estudiantes cerca de ti en tiempo real. Publica planes, comparte taxi, pide ayuda o encuentra objetos perdidos en tu campus. Beta en la UCSM, Arequipa.";
