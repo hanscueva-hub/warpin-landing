@@ -85,7 +85,8 @@ export function FinalCTA() {
 const explorarLinks = [
   { label: "Cómo funciona", href: "#como-funciona" },
   { label: "Categorías", href: "#categorias" },
-  { label: "Privacidad", href: "#privacidad" },
+  { label: "Privacidad", href: "/privacidad" },
+  { label: "Términos de uso", href: "/terminos" },
   { label: "Únete", href: "#fundador" },
 ];
 
