@@ -732,6 +732,9 @@ function initState() {
   if (saved) {
     try {
       appState = JSON.parse(saved);
+      if (!appState || !appState.codes || !Array.isArray(appState.codes) || !appState.links || !appState.links.group) {
+        throw new Error('Invalid state');
+      }
     } catch(e) {
       initFreshState();
     }
