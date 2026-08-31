@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warpin • Distribuidor Élite WhatsApp & Sync DB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --bg-dark: #07080f;
+      --bg-card: #0f111e;
+      --bg-card-hover: #151829;
+      --bg-input: #0b0c16;
+      --border-color: rgba(0, 240, 255, 0.15);
+      --border-glow: rgba(0, 240, 255, 0.4);
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.25);
+      --purple: #9d4edd;
+      --purple-glow: rgba(157, 78, 221, 0.25);
+      --green: #00ff88;
+      --green-glow: rgba(0, 255, 136, 0.2);
+      --gold: #ffb703;
+      --wa-green: #25D366;
+      --wa-dark: #128C7E;
+      --text-main: #f0f3fa;
+      --text-muted: #8a93a8;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(157, 78, 221, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.08) 0%, transparent 40%),
+        linear-gradient(to bottom, #07080f, #05060a);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    .container { max-width: 1440px; margin: 0 auto; }
+
+    /* HEADER */
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand-icon {
+      width: 46px; height: 46px;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+    .brand-text h1 {
+      font-size: 20px; font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .brand-text h1 span {
+      background: linear-gradient(90deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-text p { font-size: 12.5px; color: var(--text-muted); }
+
+    /* LIVE SYNC BADGE */
+    .sync-status-box {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 12px;
+    }
+    .sync-indicator {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 12px var(--green); }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    /* STATS HEADER */
+    .stats-bar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+      background: var(--bg-card);
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+    .stat-pill { display: flex; flex-direction: column; }
+    .stat-pill .label {
+      font-size: 10.5px; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600;
+    }
+    .stat-pill .value {
+      font-size: 17px; font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .stat-pill.available .value { color: var(--cyan); }
+    .stat-pill.copied .value { color: var(--gold); }
+    .stat-pill.claimed .value { color: var(--green); }
+    .stat-pill.total .value { color: var(--text-main); }
+
+    /* MAIN GRID */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+    }
+    @media (max-width: 1060px) { .main-grid { grid-template-columns: 1fr; } }
+
+    /* CARDS */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      padding: 22px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 15px; font-weight: 700; margin-bottom: 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      color: var(--text-main);
+    }
+
+    /* CODE HERO */
+    .code-hero {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.08), rgba(157, 78, 221, 0.08));
+      border: 1px solid var(--cyan);
+      box-shadow: 0 0 25px var(--cyan-glow);
+      text-align: center;
+      padding: 24px 20px;
+    }
+    .code-badge-top {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255, 183, 3, 0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 11.5px; font-weight: 700;
+      padding: 3px 12px; border-radius: 99px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .current-code-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 38px; font-weight: 800; letter-spacing: 3px;
+      color: #ffffff;
+      text-shadow: 0 0 20px var(--cyan), 0 0 35px var(--cyan-glow);
+      margin: 6px 0;
+      user-select: all;
+    }
+    .code-meta {
+      font-size: 12.5px; color: var(--text-muted);
+      display: flex; justify-content: center; align-items: center; gap: 14px;
+    }
+
+    /* FORM & INPUTS */
+    .form-group { margin-bottom: 14px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+    label {
+      display: block; font-size: 12.5px; font-weight: 600;
+      color: var(--text-muted); margin-bottom: 5px;
+    }
+    input, select, textarea {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-family: inherit; font-size: 13.5px;
+      padding: 10px 12px; transition: all 0.2s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+    textarea {
+      resize: vertical; min-height: 240px;
+      font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace;
+      font-size: 12.5px; line-height: 1.6;
+      background: #090a12;
+      border: 1px solid rgba(0, 240, 255, 0.2);
+    }
+
+    /* TEMPLATE SELECTOR CHIPS */
+    .chips-row {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
+    }
+    .chip-btn {
+      background: var(--bg-input);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      padding: 5px 12px; border-radius: 99px;
+      font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    .chip-btn:hover { border-color: var(--cyan); color: var(--text-main); }
+    .chip-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--cyan); color: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    /* BUTTONS */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    @media (max-width: 600px) { .action-grid { grid-template-columns: 1fr; } }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; font-family: inherit; font-size: 13.5px; font-weight: 700;
+      padding: 12px 18px; border-radius: var(--radius-md);
+      cursor: pointer; transition: all 0.2s ease; border: none;
+    }
+    .btn-whatsapp {
+      background: linear-gradient(135deg, var(--wa-green), var(--wa-dark));
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(37, 211, 102, 0.3);
+    }
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(37, 211, 102, 0.5);
+      filter: brightness(1.1);
+    }
+    .btn-copy {
+      background: linear-gradient(135deg, var(--cyan), #0096c7);
+      color: #05060a;
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+    .btn-copy:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px var(--cyan-glow);
+      filter: brightness(1.1);
+    }
+    .btn-deliver {
+      background: linear-gradient(135deg, var(--gold), #f77f00);
+      color: #05060a;
+      box-shadow: 0 0 15px rgba(255, 183, 3, 0.3);
+    }
+    .btn-deliver:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(255, 183, 3, 0.5);
+      filter: brightness(1.1);
+    }
+    .btn-secondary {
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1); border-color: var(--text-main);
+    }
+    .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: var(--radius-sm); }
+
+    /* HISTORY TABS & LIST */
+    .history-tabs {
+      display: flex; gap: 8px; margin-bottom: 12px;
+    }
+    .history-tab-btn {
+      background: transparent; border: 1px solid transparent;
+      color: var(--text-muted); padding: 5px 12px; border-radius: 99px;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+    }
+    .history-tab-btn.active {
+      background: var(--bg-input); border-color: var(--border-color); color: var(--cyan);
+    }
+
+    .history-card { max-height: 720px; display: flex; flex-direction: column; }
+    .history-list {
+      overflow-y: auto; flex: 1; padding-right: 4px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .history-list::-webkit-scrollbar { width: 6px; }
+    .history-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15); border-radius: 99px;
+    }
+
+    .history-item {
+      background: var(--bg-input);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      transition: all 0.2s ease;
+    }
+    .history-item.status-claimed-border {
+      border-left: 3px solid var(--green);
+      background: rgba(0, 255, 136, 0.03);
+    }
+    .history-item.status-copied-border {
+      border-left: 3px solid var(--gold);
+      background: rgba(255, 183, 3, 0.03);
+    }
+
+    .history-item-top {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+    }
+    .history-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700; font-size: 13.5px;
+      padding: 2px 8px; border-radius: 4px;
+    }
+    .code-claimed-pill {
+      background: rgba(0, 255, 136, 0.15); color: var(--green);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+    }
+    .code-copied-pill {
+      background: rgba(255, 183, 3, 0.15); color: var(--gold);
+      border: 1px solid rgba(255, 183, 3, 0.3);
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 7px; border-radius: 4px; font-size: 10.5px; font-weight: 700;
+    }
+    .badge-claimed { background: rgba(0, 255, 136, 0.2); color: var(--green); }
+    .badge-copied { background: rgba(255, 183, 3, 0.2); color: var(--gold); }
+    .badge-available { background: rgba(0, 240, 255, 0.15); color: var(--cyan); }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 25px; right: 25px;
+      background: var(--bg-card);
+      border: 1px solid var(--cyan);
+      box-shadow: 0 10px 40px rgba(0, 240, 255, 0.3);
+      padding: 12px 20px; border-radius: var(--radius-md);
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 13.5px;
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* TABS */
+    .tab-bar { display: flex; gap: 10px; margin-bottom: 18px; }
+    .tab-btn {
+      background: transparent; border: 1px solid transparent;
+      color: var(--text-muted); padding: 8px 16px; border-radius: var(--radius-md);
+      font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      background: var(--bg-card); border-color: var(--border-color); color: var(--cyan);
+    }
+
+    /* TABLE */
+    .codes-table-box {
+      max-height: 480px; overflow-y: auto;
+      border: 1px solid var(--border-color); border-radius: var(--radius-md);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+    th { background: var(--bg-input); color: var(--text-muted); font-weight: 600; position: sticky; top: 0; z-index: 10; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN PROTECCIÓN -->
+<div id="login-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-dark); z-index:9999; display:flex; justify-content:center; align-items:center; flex-direction:column;">
+  <div style="background:var(--bg-card); padding:40px; border-radius:20px; border:1px solid var(--border-color); text-align:center; box-shadow:0 0 40px var(--cyan-glow);">
+    <div style="font-size:40px; margin-bottom:20px;">⚡</div>
+    <h2 style="margin-bottom:10px; font-weight:800;">Acceso Restringido</h2>
+    <p style="color:var(--text-muted); margin-bottom:24px; font-size:14px;">Ingresa la contraseña de administrador</p>
+    <input type="password" id="auth-pwd" placeholder="Contraseña..." style="width:100%; text-align:center; letter-spacing:3px; margin-bottom:20px;" onkeypress="if(event.key === 'Enter') checkAuth()">
+    <button class="btn btn-primary" style="width:100%;" onclick="checkAuth()">INGRESAR</button>
+  </div>
+</div>
+
+<script>
+function checkAuth() {
+  const pwd = document.getElementById('auth-pwd').value;
+  // Simple check for "fundadores2026" or whatever the user wants
+  if(pwd === 'WarpinElite!') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-content').style.display = 'block';
+  } else {
+    alert('Contraseña incorrecta');
+  }
+}
+</script>
+<div id="app-content" style="display:none;">
+
+
+<div class="container">
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div class="brand-text">
+        <h1>WARPIN <span>• DISTRIBUIDOR ÉLITE (WHATSAPP & SYNC)</span></h1>
+        <p>Despacho de copys por encuesta y sincronización en tiempo real con Supabase</p>
+      </div>
+    </div>
+
+    <!-- LIVE DB SYNC STATUS -->
+    <div class="sync-status-box">
+      <div class="sync-indicator" id="sync-dot"></div>
+      <span id="sync-text">Supabase Conectado</span>
+      <button class="btn btn-secondary btn-sm" style="padding: 2px 8px; font-size: 11px;" onclick="syncWithSupabase(true)">🔄 Forzar Sync</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="stat-pill total">
+        <span class="label">Total Élite</span>
+        <span class="value" id="stat-total">300</span>
+      </div>
+      <div class="stat-pill available">
+        <span class="label">🟢 Disponibles</span>
+        <span class="value" id="stat-available">299</span>
+      </div>
+      <div class="stat-pill copied">
+        <span class="label">🟡 Copiados</span>
+        <span class="value" id="stat-copied">0</span>
+      </div>
+      <div class="stat-pill claimed">
+        <span class="label">🟣 Reclamados (App)</span>
+        <span class="value" id="stat-claimed">1</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('dispatcher', this)">⚡ Despachador de WhatsApp</button>
+    <button class="tab-btn" onclick="switchTab('all-codes', this)">📋 Los 300 Códigos en Vivo</button>
+    <button class="tab-btn" onclick="switchTab('settings', this)">⚙️ Links de Acceso</button>
+  </div>
+
+  <!-- TAB 1: DISPATCHER -->
+  <div id="tab-dispatcher">
+    <div class="main-grid">
+      <!-- LEFT: GENERATOR & DISPATCH -->
+      <div>
+        <!-- CODE HERO -->
+        <div class="card code-hero">
+          <div class="code-badge-top">👑 Fundador Élite • Asignación de Código</div>
+          <div class="current-code-display" id="display-code">ELITE-000000</div>
+          <div class="code-meta">
+            <span id="code-position-text">Código #1 de 300</span>
+            <span>•</span>
+            <span id="code-status-pill" class="badge badge-available">● Disponible para entregar</span>
+          </div>
+          <div style="display: flex; justify-content: center; gap: 8px; margin-top: 12px;">
+            <button class="btn btn-secondary btn-sm" onclick="prevAvailableCode()">◀ Anterior</button>
+            <button class="btn btn-secondary btn-sm" onclick="nextAvailableCode()">Siguiente ▶</button>
+            <button class="btn btn-secondary btn-sm" onclick="randomAvailableCode()">🎲 Aleatorio</button>
+          </div>
+        </div>
+
+        <!-- FORM & TEMPLATE -->
+        <div class="card">
+          <div class="card-title">
+            <span>👤 Datos del Encuestado & Formato WhatsApp</span>
+            <small style="color: var(--text-muted); font-size: 11.5px;">Formato WhatsApp: *negrita* y _cursiva_</small>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="recipient-name">Nombre del Fundador (de la encuesta):</label>
+              <input type="text" id="recipient-name" placeholder="Ej: Carlos, David, Ana..." oninput="updateCopyPreview()">
+            </div>
+            <div class="form-group">
+              <label for="recipient-phone">WhatsApp / Teléfono (opcional para abrir directo):</label>
+              <input type="text" id="recipient-phone" placeholder="Ej: 51987654321 o vacío">
+            </div>
+          </div>
+
+          <label>Plantilla de Mensaje WhatsApp:</label>
+          <div class="chips-row">
+            <button class="chip-btn active" onclick="selectTemplate('full', this)">⭐ 1. Oficial Completa (Encuesta + Android + iOS)</button>
+            <button class="chip-btn" onclick="selectTemplate('direct', this)">💬 2. Directa & Ágil</button>
+            <button class="chip-btn" onclick="selectTemplate('cyberpunk', this)">⚡ 3. Cyberpunk Mística</button>
+          </div>
+
+          <div class="form-group">
+            <label for="copy-editor">Mensaje Formateado para WhatsApp (con enlaces y pasos):</label>
+            <textarea id="copy-editor" placeholder="El copy aparecerá aquí..."></textarea>
+          </div>
+
+          <!-- ACTION BUTTONS -->
+          <div class="action-grid">
+            <button class="btn btn-copy" onclick="copyFullMessage()">
+              📋 COPIAR TEXTO WHATSAPP
+            </button>
+            <button class="btn btn-whatsapp" onclick="openInWhatsApp()">
+              💬 ABRIR EN WHATSAPP WEB
+            </button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-top: 12px;">
+            <button class="btn btn-deliver" onclick="markAsDeliveredManual()">
+              ✅ MARCAR COMO ENTREGADO (COPIADO)
+            </button>
+            <button class="btn btn-secondary" onclick="nextAvailableCode()">
+              ⏭️ SALTAR CÓDIGO
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: HISTORY (COPIED & CLAIMED) -->
+      <div>
+        <div class="card history-card">
+          <div class="card-title">
+            <span>📦 Historial de Seguimiento (<span id="history-count">0</span>)</span>
+            <button class="btn btn-secondary btn-sm" onclick="exportHistoryCSV()">📥 Exportar CSV</button>
+          </div>
+
+          <!-- HISTORY SUB-TABS -->
+          <div class="history-tabs">
+            <button class="history-tab-btn active" onclick="setHistoryFilter('all', this)">Todos</button>
+            <button class="history-tab-btn" onclick="setHistoryFilter('claimed', this)">🟣 Reclamados en App (<span id="count-claimed-tab">0</span>)</button>
+            <button class="history-tab-btn" onclick="setHistoryFilter('copied', this)">🟡 Copiados (<span id="count-copied-tab">0</span>)</button>
+          </div>
+
+          <input type="text" id="history-search" placeholder="🔍 Buscar por código, nombre o @usuario..." style="margin-bottom: 12px;" oninput="renderHistory()">
+
+          <div class="history-list" id="history-container">
+            <!-- Dynamically rendered -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: ALL CODES -->
+  <div id="tab-all-codes" style="display: none;">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div class="card-title" style="margin-bottom: 0;">📋 Estado en Vivo de los 300 Códigos Fundadores Élite</div>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="table-search" placeholder="Buscar código o usuario..." style="width: 220px;" oninput="renderCodesTable()">
+          <select id="table-filter" style="width: 170px;" onchange="renderCodesTable()">
+            <option value="all">Todos los Estados (300)</option>
+            <option value="available">🟢 Solo Disponibles</option>
+            <option value="copied">🟡 Solo Copiados</option>
+            <option value="claimed">🟣 Solo Reclamados (App)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="codes-table-box">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Código Élite</th>
+              <th>Estado Actual</th>
+              <th>Asignado / Canjeado por</th>
+              <th>Fecha Registro / Canje</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody id="codes-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: SETTINGS -->
+  <div id="tab-settings" style="display: none;">
+    <div class="card" style="max-width: 720px; margin: 0 auto;">
+      <div class="card-title">⚙️ Enlaces de Distribución (Android & iOS)</div>
+      
+      <div class="form-group">
+        <label>1. Grupo de Google (Android Paso 1):</label>
+        <input type="text" id="setting-group" value="https://groups.google.com/g/acceso-warpin" onchange="saveSettings()">
+      </div>
+
+      <div class="form-group">
+        <label>2. Enlace de Tester ("Become a Tester" Android Paso 2):</label>
+        <input type="text" id="setting-optin" value="https://play.google.com/apps/testing/com.warpin.warpin_app" onchange="saveSettings()">
+      </div>
+
+      <div class="form-group">
+        <label>3. Enlace directo Play Store (Android Paso 3):</label>
+        <input type="text" id="setting-playstore" value="https://play.google.com/store/apps/details?id=com.warpin.warpin_app" onchange="saveSettings()">
+      </div>
+
+      <div class="form-group">
+        <label>Gestión de Copia de Seguridad:</label>
+        <div style="display: flex; gap: 10px; margin-top: 8px;">
+          <button class="btn btn-secondary btn-sm" onclick="exportFullBackup()">💾 Descargar Backup JSON</button>
+          <button class="btn btn-secondary btn-sm" onclick="resetLocalDispatchData()" style="color: #ff6666;">⚠️ Resetear Marcas Locales</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast">
+  <span id="toast-icon">✨</span>
+  <span id="toast-message">Copiado al portapapeles</span>
+</div>
+
+<script>
+// --- SUPABASE CONFIGURATION ---
+const SUPABASE_URL = 'https://mwizaquouhqkrznhwvia.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im13aXphcXVvdWhxa3J6bmh3dmlhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ1MDMyNjUsImV4cCI6MjEwMDA3OTI2NX0.tiY7F3dhQsuXm3Vtu29c1i0tNP9jniYTZqyLI1iDTRw';
+const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
+
+// --- SEED CODES ---
+const RAW_CODES_DATA = [{"code":"ELITE-00F2CD","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-014414","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-026BC6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-026FF1","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-030BB7","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-03C3F6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-04E282","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-05014A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-055CB8","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-0711BB","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-07D70D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-081AEC","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-08407C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-0867A6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-0B5A67","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-0E15E6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-104F9D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-1050B3","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-12DD36","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-139AD5","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-152E7F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-157190","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-161691","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-175232","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-17D65D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-183720","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-18599C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-18C14F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-194486","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-1951E9","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-19EB29","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-1B1896","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-1BCC3E","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-1ED4EE","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-1F3367","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-20BFC8","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-20C81B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-21F58A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-22434E","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-2270EC","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-228951","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-230F22","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-2434C6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-247DF4","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-251742","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-2793A7","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-287CD3","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-28C314","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-29784D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-2AF13A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-2BEFD3","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-2E0F05","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-31F0B9","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-3229A5","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-32890F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-330292","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-33D207","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-341285","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-34388D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-34A1C1","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-34B8F3","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-359AD2","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-37DF98","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-386A42","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-3A79F6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-3BF1B5","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-3C3CD4","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-3E6327","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-3F660E","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-3F7231","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-408EBC","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-4189CC","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-43B74B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-44B134","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-45C5CE","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-45C704","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-46547F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-4663EF","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-47CFC1","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-48232D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-4B9FE2","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-4C7B4C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-4D9784","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-4E2BCF","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-4EDEB3","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-4EF65A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-4F7284","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-4FB9B3","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-508DF8","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-519038","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-51CE73","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-5233EE","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-526341","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-52875A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-5390E4","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-53B710","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-53ECDB","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-546A97","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-550FBC","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-554F45","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-555A3E","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-57196B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-594776","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-594978","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-59D540","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-59E1C9","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-5A208C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-5B7410","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-5C0B34","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-5CC7DD","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-5FAD7B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-601AF5","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-601BDA","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-602328","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-60AECE","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6237A7","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-62624D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-627C3A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-634AD6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-638EB2","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-653118","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-659F77","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-67453D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6799F0","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-68BF4C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6A82D1","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6AAAC5","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6BAA56","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6C1BA2","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6D23F8","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6E8442","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6E8798","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6EA1CB","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6F1377","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-6F97A3","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-705149","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-72B9CE","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-744AC7","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-749649","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-74AD76","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-74B979","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-75424D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-758871","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-792475","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-7AB3CB","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-7AE9AA","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-7BCCB6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-7E1D22","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-7F8C2B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-804654","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-80D79F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8148CD","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8199F6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-81D11A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8342DE","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8390C7","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-839154","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8466C9","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-84CA9C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8531B2","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-878F26","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-88973A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8CE451","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8D4A87","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8DA63B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8E4F8C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8ECDD6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8ED242","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8F689B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8FD711","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-8FEC05","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-918CB3","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-91A1F0","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-95084E","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-95580D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-95E3D2","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-96E6EB","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-977285","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-9B073D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-9B080F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-9B19B5","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-9B7C78","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-9B9E00","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-9CE07F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-9D7A00","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-9F6D79","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-9FAC71","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-A07C80","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-A08277","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-A0CADD","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-A16261","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-A16E3A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-A2190C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-A651D9","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-A76482","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-A7E08A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-A7E643","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-AAA383","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-AB9B5E","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-ABC468","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-ABCDFB","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-AC136F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-AC23E8","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-ACBB66","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-ADE5CB","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-AE5FB2","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-AE6444","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-AF418C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-AFB21D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B06FAA","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B0E825","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B4A259","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B5902B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B5FEF8","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B61822","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B75A52","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B7FC96","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B880DA","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B8906C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B8E044","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-B95C46","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-BBA70E","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-BC6B82","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-BC7759","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-BC7EF2","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-BC9B58","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-BE0A05","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C038D4","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C08F38","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C11AC7","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C16CED","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C2865F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C47256","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C4B97E","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C4FB70","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C673DF","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C71C66","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C75A15","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C8124A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-C922FA","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-CA19D8","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-CB7A0B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-CD11FD","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-CD86B8","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-CF2832","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-CF906C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D057E5","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D08C07","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D270DC","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D4BDE5","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D58E7E","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D5EE35","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D66771","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D68379","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D85B91","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D881A7","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-D8F9F4","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-DA218A","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-DABF64","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-DBDB52","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-DC53B1","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-DEA45C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-DEE5F7","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E0FFEF","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E2025C","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E28DAE","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E2EE69","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E3A7A5","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E3CEC0","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E43B5B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E5806B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E6908B","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E69238","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E85ED6","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E8A791","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-E8FA16","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-EAE7AD","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-EC5E45","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-ED327F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-ED7341","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-EDBAB5","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-EDFCB7","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F1E117","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F2D693","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F32FF4","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F33706","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F4CB96","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F5644F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F594C3","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F630B7","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F7A25D","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F92375","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F977EC","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-F9CA52","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-FB420F","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-FBE884","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-FC17BB","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-FD23EA","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-FE16A2","times_used":0,"max_uses":1,"expires_at":null},{"code":"ELITE-FF3404","times_used":1,"max_uses":1,"expires_at":null}];
+
+// --- WHATSAPP TEMPLATES (WhatsApp formatting: *bold*, _italic_) ---
+const TEMPLATES = {
+  full: `¡Hola *{NOMBRE}*! 👋⚡️
+
+Te escribo del equipo de *Warpin*. Queremos darte las gracias por haber participado en la *encuesta de desarrollo* que hicimos hace poco. 🙌
+
+¡Por habernos ayudado a construir la app, te ganaste el rango oficial de *Fundador Élite*! 👑✨
+
+Esto te otorga acceso anticipado prioritario, insignia dorada permanente en tu perfil y funciones exclusivas para los primeros miembros.
+
+🔑 Tu código de acceso único e intransferible es:
+👉 *{CODIGO}* 👈
+
+━━━━━━━━━━━━━━━━━━━━
+📲 *PASOS PARA INSTALAR LA APP:*
+
+🤖 *Si usas Android:*
+1️⃣ Únete al Grupo de Google:
+{LINK_GROUP}
+
+2️⃣ Entra aquí y haz clic en *"Become a Tester"*:
+{LINK_OPTIN}
+
+3️⃣ Descarga la app en Play Store:
+{LINK_PLAYSTORE}
+
+⚠️ _*Nota importante:* Debes usar el MISMO correo Gmail en los 3 pasos (el del grupo, el de tester y tu cuenta de Google Play Store)._
+
+🍎 *Si usas iPhone (iOS):*
+Respóndeme a este mensaje con tu correo para enviarte de inmediato tu pase de *TestFlight*.
+━━━━━━━━━━━━━━━━━━━━
+
+Al abrir la app, ingresa tu código *{CODIGO}* en la pantalla de bienvenida para activar tu rango de Fundador Élite.
+
+¡Bienvenido al mapa y nos vemos dentro! 📍🚀`,
+
+  direct: `¡Hola *{NOMBRE}*! 🚀 Gracias por completar nuestra *encuesta de Warpin*.
+
+Como agradecimiento, te reservamos tu pase exclusivo de *Fundador Élite* 👑:
+🎫 Tu código: *{CODIGO}*
+
+📥 *CÓMO DESCARGAR:*
+
+🤖 *En Android:*
+1. Entra al grupo: {LINK_GROUP}
+2. Acepta ser Tester ("Become a Tester"): {LINK_OPTIN}
+3. Descarga en Play Store: {LINK_PLAYSTORE}
+_(Ojo: Usa la misma cuenta de Gmail en los 3 pasos)._
+
+🍎 *En iPhone:*
+Respóndeme este chat con tu correo para habilitar tu acceso en TestFlight.
+
+¡Ingresa tu código al registrarte y bienvenido a Warpin! 📍⚡️`,
+
+  cyberpunk: `⚡️ *ACCESO CONCEDIDO: PROTOCOLO FUNDADOR ÉLITE* ⚡️
+
+¡Hola *{NOMBRE}*! Tu participación en nuestra encuesta desbloqueó tu acceso prioritario a *Warpin*, la red social urbana en tiempo real. 🗺️🔥
+
+🔐 Tu código de Fundador Élite:
+👉 *{CODIGO}* 👈
+
+📲 *INSTRUCCIONES DE DESPLIEGUE:*
+
+🤖 *Android:*
+1. Únete al grupo: {LINK_GROUP}
+2. Haz clic en "Become a Tester": {LINK_OPTIN}
+3. Instala desde Play Store: {LINK_PLAYSTORE}
+_Nota: El Gmail debe coincidir en el grupo, tester y Play Store._
+
+🍎 *iOS (iPhone):*
+Escríbeme tu correo por aquí para enviarte la invitación de TestFlight.
+
+Abre la app, introduce tu código y marca tu territorio en el mapa. 📍✨`
+};
+
+// --- APP STATE ---
+let appState = {
+  codes: [], // array of { id, code, status: 'available'|'copied'|'claimed', recipientName, phone, copySent, copiedAt, claimedAt, username, fullName }
+  currentCodeIndex: 0,
+  selectedTemplateKey: 'full',
+  historyFilter: 'all',
+  links: {
+    group: 'https://groups.google.com/g/acceso-warpin',
+    optin: 'https://play.google.com/apps/testing/com.warpin.warpin_app',
+    playstore: 'https://play.google.com/store/apps/details?id=com.warpin.warpin_app'
+  }
+};
+
+// --- INITIALIZATION ---
+function initState() {
+  // Load local storage if present
+  const saved = localStorage.getItem('warpin_elite_distributor_v2');
+  if (saved) {
+    try {
+      appState = JSON.parse(saved);
+    } catch(e) {
+      initFreshState();
+    }
+  } else {
+    initFreshState();
+  }
+
+  // Initial render
+  findNextAvailableIndex();
+  updateUI();
+
+  // Sync with live DB
+  syncWithSupabase();
+
+  // Auto-sync every 30 seconds
+  setInterval(() => {
+    syncWithSupabase(false);
+  }, 30000);
+}
+
+function initFreshState() {
+  appState.codes = RAW_CODES_DATA.map((c, i) => ({
+    id: i + 1,
+    code: c.code,
+    status: c.times_used > 0 ? 'claimed' : 'available',
+    recipientName: null,
+    phone: null,
+    copySent: null,
+    copiedAt: null,
+    claimedAt: c.times_used > 0 ? new Date().toISOString() : null,
+    username: null,
+    fullName: null
+  }));
+  appState.currentCodeIndex = 0;
+  appState.selectedTemplateKey = 'full';
+  appState.historyFilter = 'all';
+  appState.links = {
+    group: 'https://groups.google.com/g/acceso-warpin',
+    optin: 'https://play.google.com/apps/testing/com.warpin.warpin_app',
+    playstore: 'https://play.google.com/store/apps/details?id=com.warpin.warpin_app'
+  };
+  saveState();
+}
+
+function saveState() {
+  localStorage.setItem('warpin_elite_distributor_v2', JSON.stringify(appState));
+  updateStats();
+}
+
+// --- SYNC WITH SUPABASE REALTIME / RPC ---
+async function syncWithSupabase(notifyUser = false) {
+  const dot = document.getElementById('sync-dot');
+  const text = document.getElementById('sync-text');
+  dot.style.background = '#ffb703';
+  text.textContent = 'Sincronizando...';
+
+  if (!supabase) {
+    dot.style.background = '#ff4d4d';
+    text.textContent = 'Sin conexión Supabase';
+    return;
+  }
+
+  try {
+    const { data, error } = await supabase.rpc('get_elite_founder_codes_status');
+    if (error) {
+      console.warn('RPC sync warning:', error);
+      dot.style.background = '#ff4d4d';
+      text.textContent = 'Error sync';
+      return;
+    }
+
+    if (data && Array.isArray(data)) {
+      let newlyClaimedCount = 0;
+
+      data.forEach(dbRow => {
+        const localCode = appState.codes.find(c => c.code === dbRow.code);
+        if (localCode) {
+          if (dbRow.times_used > 0) {
+            if (localCode.status !== 'claimed') {
+              localCode.status = 'claimed';
+              newlyClaimedCount++;
+            }
+            localCode.claimedAt = dbRow.redeemed_at || new Date().toISOString();
+            localCode.username = dbRow.username || localCode.username;
+            localCode.fullName = dbRow.full_name || localCode.fullName;
+          }
+        }
+      });
+
+      saveState();
+      updateUI();
+
+      dot.style.background = 'var(--green)';
+      text.textContent = 'En vivo (Sincronizado)';
+
+      if (notifyUser) {
+        showToast('🔄 ¡Sincronizado con Supabase en vivo!');
+      }
+    }
+  } catch(err) {
+    console.error('Sync failed:', err);
+    dot.style.background = '#ff4d4d';
+    text.textContent = 'Fallo al conectar';
+  }
+}
+
+// --- ACTIVE CODE SELECTION ---
+function getActiveCode() {
+  return appState.codes[appState.currentCodeIndex] || { code: 'ELITE-FIN', status: 'available', id: 0 };
+}
+
+function findNextAvailableIndex() {
+  const idx = appState.codes.findIndex(c => c.status === 'available');
+  if (idx !== -1) {
+    appState.currentCodeIndex = idx;
+  }
+}
+
+function nextAvailableCode() {
+  const nextIdx = appState.codes.findIndex((c, i) => i > appState.currentCodeIndex && c.status === 'available');
+  if (nextIdx !== -1) {
+    appState.currentCodeIndex = nextIdx;
+  } else {
+    findNextAvailableIndex();
+  }
+  updateUI();
+}
+
+function prevAvailableCode() {
+  for (let i = appState.currentCodeIndex - 1; i >= 0; i--) {
+    if (appState.codes[i].status === 'available') {
+      appState.currentCodeIndex = i;
+      updateUI();
+      return;
+    }
+  }
+}
+
+function randomAvailableCode() {
+  const avail = appState.codes.filter(c => c.status === 'available');
+  if (avail.length === 0) return;
+  const rand = avail[Math.floor(Math.random() * avail.length)];
+  appState.currentCodeIndex = appState.codes.findIndex(c => c.code === rand.code);
+  updateUI();
+}
+
+// --- TEMPLATES & PREVIEW ---
+function selectTemplate(key, btnElem) {
+  appState.selectedTemplateKey = key;
+  document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+  if (btnElem) btnElem.classList.add('active');
+  updateCopyPreview();
+}
+
+function updateCopyPreview() {
+  const current = getActiveCode();
+  const rawName = document.getElementById('recipient-name').value.trim();
+  const name = rawName ? rawName : 'Fundador';
+  const template = TEMPLATES[appState.selectedTemplateKey] || TEMPLATES.full;
+
+  const formatted = template
+    .replace(/{NOMBRE}/g, name)
+    .replace(/{CODIGO}/g, current.code)
+    .replace(/{LINK_GROUP}/g, appState.links.group)
+    .replace(/{LINK_OPTIN}/g, appState.links.optin)
+    .replace(/{LINK_PLAYSTORE}/g, appState.links.playstore);
+
+  document.getElementById('copy-editor').value = formatted;
+}
+
+// --- UI REFRESH ---
+function updateUI() {
+  const current = getActiveCode();
+  document.getElementById('display-code').textContent = current.code;
+  document.getElementById('code-position-text').textContent = `Código #${current.id || 1} de 300`;
+
+  const statusPill = document.getElementById('code-status-pill');
+  if (current.status === 'available') {
+    statusPill.className = 'badge badge-available';
+    statusPill.textContent = '● Disponible para entregar';
+  } else if (current.status === 'copied') {
+    statusPill.className = 'badge badge-copied';
+    statusPill.textContent = '🟡 Ya fue copiado/entregado';
+  } else {
+    statusPill.className = 'badge badge-claimed';
+    statusPill.textContent = '🟣 Ya reclamado en App';
+  }
+
+  updateCopyPreview();
+  updateStats();
+  renderHistory();
+}
+
+function updateStats() {
+  const total = appState.codes.length;
+  const available = appState.codes.filter(c => c.status === 'available').length;
+  const copied = appState.codes.filter(c => c.status === 'copied').length;
+  const claimed = appState.codes.filter(c => c.status === 'claimed').length;
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-available').textContent = available;
+  document.getElementById('stat-copied').textContent = copied;
+  document.getElementById('stat-claimed').textContent = claimed;
+
+  document.getElementById('count-claimed-tab').textContent = claimed;
+  document.getElementById('count-copied-tab').textContent = copied;
+  document.getElementById('history-count').textContent = copied + claimed;
+}
+
+// --- ACTIONS ---
+function copyFullMessage() {
+  const current = getActiveCode();
+  const text = document.getElementById('copy-editor').value;
+
+  navigator.clipboard.writeText(text).then(() => {
+    // Automatically mark as copied
+    recordDelivery(current, text, false);
+    showToast(`📋 ¡Copy copiado! Código ${current.code} marcado como COPIADO`);
+  });
+}
+
+function openInWhatsApp() {
+  const current = getActiveCode();
+  const text = document.getElementById('copy-editor').value;
+  const phone = document.getElementById('recipient-phone').value.trim().replace(/[^0-9]/g, '');
+
+  recordDelivery(current, text, false);
+
+  const encoded = encodeURIComponent(text);
+  const waUrl = phone ? `https://wa.me/${phone}?text=${encoded}` : `https://api.whatsapp.com/send?text=${encoded}`;
+
+  window.open(waUrl, '_blank');
+  showToast(`💬 Abriendo WhatsApp con código ${current.code}`);
+}
+
+function markAsDeliveredManual() {
+  const current = getActiveCode();
+  const text = document.getElementById('copy-editor').value;
+  recordDelivery(current, text, true);
+  showToast(`✅ Código ${current.code} marcado como ENTREGADO`);
+  nextAvailableCode();
+}
+
+function recordDelivery(codeObj, copyText, advanceNext) {
+  if (!codeObj || codeObj.status === 'claimed') return;
+
+  const rawName = document.getElementById('recipient-name').value.trim();
+  const phone = document.getElementById('recipient-phone').value.trim();
+
+  codeObj.status = 'copied';
+  codeObj.recipientName = rawName || 'Fundador Encuestado';
+  codeObj.phone = phone || null;
+  codeObj.copySent = copyText;
+  codeObj.copiedAt = new Date().toISOString();
+
+  saveState();
+  updateUI();
+
+  if (advanceNext) {
+    document.getElementById('recipient-name').value = '';
+    document.getElementById('recipient-phone').value = '';
+  }
+}
+
+// --- HISTORY RENDERING ---
+function setHistoryFilter(filter, elem) {
+  appState.historyFilter = filter;
+  document.querySelectorAll('.history-tab-btn').forEach(b => b.classList.remove('active'));
+  if (elem) elem.classList.add('active');
+  renderHistory();
+}
+
+function renderHistory() {
+  const container = document.getElementById('history-container');
+  const search = document.getElementById('history-search')?.value.toLowerCase() || '';
+
+  // Get items from codes array that are copied or claimed
+  let items = appState.codes.filter(c => c.status === 'copied' || c.status === 'claimed');
+
+  if (appState.historyFilter === 'copied') {
+    items = items.filter(c => c.status === 'copied');
+  } else if (appState.historyFilter === 'claimed') {
+    items = items.filter(c => c.status === 'claimed');
+  }
+
+  // Search filter
+  items = items.filter(c => 
+    c.code.toLowerCase().includes(search) ||
+    (c.recipientName && c.recipientName.toLowerCase().includes(search)) ||
+    (c.username && c.username.toLowerCase().includes(search)) ||
+    (c.fullName && c.fullName.toLowerCase().includes(search))
+  );
+
+  // Sort: claimed first, then by date desc
+  items.sort((a, b) => {
+    const timeA = new Date(a.claimedAt || a.copiedAt || 0).getTime();
+    const timeB = new Date(b.claimedAt || b.copiedAt || 0).getTime();
+    return timeB - timeA;
+  });
+
+  if (items.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 40px 10px; color: var(--text-muted);">
+        <div style="font-size: 32px; margin-bottom: 8px;">📭</div>
+        <p>No hay códigos en este filtro.</p>
+        <small>Los códigos copiados o reclamados en la app aparecerán aquí.</small>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = items.map(item => {
+    const isClaimed = item.status === 'claimed';
+    const dateFormatted = new Date(item.claimedAt || item.copiedAt || Date.now()).toLocaleDateString('es-PE', {
+      day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+    });
+
+    let displayUser = item.recipientName || 'Sin Nombre';
+    if (isClaimed && item.username) {
+      displayUser = `${item.fullName || item.recipientName || 'Usuario'} (@${item.username})`;
+    }
+
+    return `
+      <div class="history-item ${isClaimed ? 'status-claimed-border' : 'status-copied-border'}">
+        <div class="history-item-top">
+          <span class="history-code ${isClaimed ? 'code-claimed-pill' : 'code-copied-pill'}">${item.code}</span>
+          <span style="font-size: 11px; color: var(--text-muted);">${dateFormatted}</span>
+        </div>
+        <div style="font-size: 12.5px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; justify-content: space-between;">
+          <span>👤 ${displayUser}</span>
+          <span class="badge ${isClaimed ? 'badge-claimed' : 'badge-copied'}">
+            ${isClaimed ? '🟣 Reclamado en App' : '🟡 Copiado (Pendiente)'}
+          </span>
+        </div>
+        ${item.phone ? `<div style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 4px;">📱 WhatsApp: ${item.phone}</div>` : ''}
+        <div style="display: flex; gap: 6px; margin-top: 8px;">
+          ${item.copySent ? `<button class="btn btn-secondary btn-sm" onclick="reCopyText(\`${encodeURIComponent(item.copySent)}\`)">📋 Re-copiar Copy</button>` : ''}
+          <button class="btn btn-secondary btn-sm" onclick="reCopyCode('${item.code}')">🔑 Copiar Código</button>
+          ${!isClaimed ? `<button class="btn btn-secondary btn-sm" style="color: #ff6666;" onclick="undoStatus('${item.code}')">↩️ Deshacer</button>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function reCopyText(encoded) {
+  navigator.clipboard.writeText(decodeURIComponent(encoded)).then(() => {
+    showToast('✨ Mensaje re-copiado para WhatsApp!');
+  });
+}
+
+function reCopyCode(code) {
+  navigator.clipboard.writeText(code).then(() => {
+    showToast(`🔑 Código ${code} copiado!`);
+  });
+}
+
+function undoStatus(code) {
+  const item = appState.codes.find(c => c.code === code);
+  if (item && item.status === 'copied') {
+    item.status = 'available';
+    item.recipientName = null;
+    item.phone = null;
+    item.copySent = null;
+    item.copiedAt = null;
+    saveState();
+    updateUI();
+    showToast(`↩️ Código ${code} regresado a Disponibles`);
+  }
+}
+
+// --- ALL CODES TABLE ---
+function renderCodesTable() {
+  const tbody = document.getElementById('codes-table-body');
+  const search = document.getElementById('table-search').value.toLowerCase();
+  const filter = document.getElementById('table-filter').value;
+
+  const filtered = appState.codes.filter(c => {
+    const matchSearch = c.code.toLowerCase().includes(search) || 
+      (c.recipientName && c.recipientName.toLowerCase().includes(search)) ||
+      (c.username && c.username.toLowerCase().includes(search));
+
+    if (!matchSearch) return false;
+    if (filter === 'available') return c.status === 'available';
+    if (filter === 'copied') return c.status === 'copied';
+    if (filter === 'claimed') return c.status === 'claimed';
+    return true;
+  });
+
+  tbody.innerHTML = filtered.map(c => {
+    const isClaimed = c.status === 'claimed';
+    const isCopied = c.status === 'copied';
+
+    let statusBadge = '<span class="badge badge-available">🟢 Disponible</span>';
+    if (isClaimed) statusBadge = '<span class="badge badge-claimed">🟣 Reclamado</span>';
+    else if (isCopied) statusBadge = '<span class="badge badge-copied">🟡 Copiado</span>';
+
+    const who = c.username ? `@${c.username} (${c.fullName || c.recipientName})` : (c.recipientName || '—');
+    const when = c.claimedAt || c.copiedAt ? new Date(c.claimedAt || c.copiedAt).toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—';
+
+    return `
+      <tr>
+        <td>${c.id}</td>
+        <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">${c.code}</td>
+        <td>${statusBadge}</td>
+        <td>${who}</td>
+        <td>${when}</td>
+        <td>
+          ${c.status === 'available' ? 
+            `<button class="btn btn-secondary btn-sm" onclick="selectCodeFromTable(${c.id - 1})">🎯 Asignar</button>` :
+            `<button class="btn btn-secondary btn-sm" onclick="reCopyCode('${c.code}')">🔑 Copiar</button>`
+          }
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function selectCodeFromTable(index) {
+  appState.currentCodeIndex = index;
+  switchTab('dispatcher');
+  document.querySelectorAll('.tab-btn')[0].classList.add('active');
+  updateUI();
+}
+
+// --- TABS & SETTINGS ---
+function switchTab(tabId, btnElem) {
+  document.getElementById('tab-dispatcher').style.display = tabId === 'dispatcher' ? 'block' : 'none';
+  document.getElementById('tab-all-codes').style.display = tabId === 'all-codes' ? 'block' : 'none';
+  document.getElementById('tab-settings').style.display = tabId === 'settings' ? 'block' : 'none';
+
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  if (btnElem) btnElem.classList.add('active');
+
+  if (tabId === 'all-codes') renderCodesTable();
+}
+
+function saveSettings() {
+  appState.links.group = document.getElementById('setting-group').value.trim();
+  appState.links.optin = document.getElementById('setting-optin').value.trim();
+  appState.links.playstore = document.getElementById('setting-playstore').value.trim();
+  saveState();
+  updateCopyPreview();
+  showToast('⚙️ Enlaces guardados con éxito.');
+}
+
+function exportHistoryCSV() {
+  const items = appState.codes.filter(c => c.status === 'copied' || c.status === 'claimed');
+  if (items.length === 0) {
+    showToast('⚠️ No hay registros para exportar.');
+    return;
+  }
+
+  let csv = 'Codigo,Estado,Destinatario_Encuesta,Usuario_App,Fecha_Registro\n';
+  items.forEach(c => {
+    csv += `"${c.code}","${c.status}","${(c.recipientName||'').replace(/"/g,'""')}","${(c.username||'').replace(/"/g,'""')}","${c.claimedAt||c.copiedAt||''}"\n`;
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `warpin_fundadores_elite_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  showToast('📥 Reporte CSV descargado.');
+}
+
+function exportFullBackup() {
+  const blob = new Blob([JSON.stringify(appState, null, 2)], { type: 'application/json;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `warpin_distribuidor_backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  showToast('💾 Backup descargado.');
+}
+
+function resetLocalDispatchData() {
+  if (confirm('¿Deseas reiniciar los estados locales marcados como copiados? Los canjeados en la base de datos se mantendrán.')) {
+    localStorage.removeItem('warpin_elite_distributor_v2');
+    initFreshState();
+    syncWithSupabase();
+    showToast('🔄 Estados locales reiniciados.');
+  }
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-message').textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2600);
+}
+
+// STARTUP
+window.addEventListener('DOMContentLoaded', () => {
+  initState();
+});
+</script>
+</div>
+</body>
+</html>
