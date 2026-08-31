@@ -1226,9 +1226,11 @@ function showToast(msg) {
 }
 
 // STARTUP
-window.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', initState);
+} else {
   initState();
-});
+}
 </script>
 </div>
 </body>
