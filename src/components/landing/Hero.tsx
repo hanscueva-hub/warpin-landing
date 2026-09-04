@@ -1,10 +1,11 @@
 import { LiveMap } from "./LiveMap";
 import { Countdown } from "./Countdown";
+import { ACCESOS_RECLAMADOS, RADIO_RADAR } from "@/lib/launch";
 import { StoreButtons } from "./StoreButtons";
 
 const FACTS = [
   { value: "Correo institucional", label: "para poder entrar" },
-  { value: "0.5 – 3 km", label: "radio del radar" },
+  { value: RADIO_RADAR, label: "de radio a la redonda" },
   { value: "Ubicación protegida", label: "en cada publicación" },
   { value: "Todo expira", label: "sin historial público" },
 ];
@@ -36,8 +37,8 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-[var(--cyan)]" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--cyan)]" />
             </span>
-            <span className="tabular-nums">779 accesos reclamados</span>
-            <span className="hidden sm:inline"> · UCSM Arequipa</span>
+            <span className="tabular-nums">{ACCESOS_RECLAMADOS} accesos reclamados</span>
+            <span className="hidden sm:inline"> · Solo universitarios · Perú</span>
           </span>
 
           <h1 className="mt-6 text-balance font-display text-[2.05rem] font-bold leading-[1] sm:leading-[0.98] tracking-[-0.04em] text-white sm:text-[3.4rem] lg:text-[3.6rem]">
@@ -46,7 +47,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-4 max-w-[47ch] text-base leading-relaxed text-white/65 sm:text-[17px]">
-            Un cargador, apuntes de Cálculo, con quién compartir taxi.{" "}
+            Con quién almorzar, un cargador, dónde hay sitio en la cafetería.{" "}
             <span className="hidden sm:inline">
               Lo publicas, alguien cerca responde, y desaparece cuando expira.
             </span>
@@ -68,7 +69,7 @@ export function Hero() {
           className="animate-fade-up mt-5 text-[13px] tracking-[0.02em] text-white/40"
           style={{ animationDelay: "0.24s" }}
         >
-          Solo estudiantes de la <span className="text-white/65">UCSM</span> ·{" "}
+          Solo <span className="text-white/65">universitarios</span> ·{" "}
           <span className="text-white/65">Verificados</span> ·{" "}
           <span className="text-white/65">Sin spam</span>
         </p>

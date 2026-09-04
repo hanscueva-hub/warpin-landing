@@ -5,8 +5,8 @@ import { useCountdown } from "@/hooks/use-countdown";
 const navLinks = [
   { label: "Cómo funciona", href: "#como-funciona" },
   { label: "Categorías",    href: "#categorias" },
-  { label: "Privacidad",    href: "#privacidad" },
-  { label: "Únete",         href: "#fundador" },
+  { label: "Privacidad",    href: "/privacidad" },
+  { label: "Fundadores",    href: "#fundador" },
 ];
 
 export function Header() {

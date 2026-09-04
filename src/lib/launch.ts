@@ -16,3 +16,9 @@ export const APP_STORE_URL = "https://apps.apple.com/pe/app/warpin/id6806744263"
 export const PLAY_STORE_URL =
   "https://play.google.com/store/apps/details?id=com.warpin.warpin_app";
 export const WHATSAPP_URL = "https://chat.whatsapp.com/IK4zPo8yN4gIc9Y5RY1ecq";
+
+/** Cifras que se repiten en varias secciones. Un solo lugar para cambiarlas. */
+export const ACCESOS_RECLAMADOS = "1003";
+export const ACCESOS_REDONDEADO = "+1.000";
+export const RADIO_RADAR = "3 km";
+export const CAMPUS_ACTIVOS = ["UCSM"];

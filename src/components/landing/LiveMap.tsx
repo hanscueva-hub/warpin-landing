@@ -21,23 +21,26 @@ type Pin = {
   y: number;
 };
 
-/** Escritorio: el mapa vive a la derecha del texto, con espacio para 7 pines. */
+/** Escritorio: el mapa vive a la derecha del texto.
+ *  Foco deliberado en los dos motivos por los que la gente abre Warpin:
+ *  socializar y ayuda rápida. Nada de taxi acá. */
 const PINS_DESKTOP: Pin[] = [
-  { text: "Junta tranqui en el parque de las piedritas", cat: "social", x: 63, y: 30 },
-  { text: "Comparto taxi a Cayma, salgo 6:40", cat: "transporte", x: 79, y: 45 },
-  { text: "Alguien que me enseñe Cálculo II?", cat: "ayuda", x: 68, y: 62 },
-  { text: "A la señora le quedan 2 almuerzos", cat: "random", x: 89, y: 71 },
-  { text: "Nos faltan 2 para el taco", cat: "random", x: 84, y: 88 },
-  { text: "Cargador tipo C en la biblio", cat: "ayuda", x: 92, y: 27 },
-  { text: "Voy a Busta, alguien quiere?", cat: "social", x: 58, y: 16 },
+  // El central, y es de socializar: es el mensaje que queremos que se lea primero.
+  { text: "Alguien para almorzar? Estoy en hueco", cat: "social", x: 68, y: 41 },
+  { text: "¿Dónde hay espacio en la cafetería?", cat: "ayuda", x: 88, y: 25 },
+  { text: "Junta tranqui en el parque de las piedritas", cat: "social", x: 59, y: 23 },
+  { text: "Cargador tipo C, biblio piso 2", cat: "ayuda", x: 54, y: 62 },
+  { text: "Fulbito 5 v 5, faltan 2", cat: "social", x: 87, y: 58 },
+  { text: "Alguien que me enseñe Cálculo II?", cat: "ayuda", x: 88, y: 78 },
+  { text: "¿Hay sitio en la sala de estudio?", cat: "ayuda", x: 90, y: 41 },
 ];
 
-/** Celular: el texto ocupa la pantalla, así que los pines se van al borde
- *  superior derecho y el mapa queda como atmósfera, nunca tapando la lectura. */
+/** Reserva: debajo de lg el texto ocupa todo el ancho y cualquier globo choca
+ *  con el titular o con los botones, así que ahí el mapa va sin globos. */
 const PINS_MOBILE: Pin[] = [
-  { text: "Nos faltan 2 para el taco", cat: "random", x: 46, y: 15 },
-  { text: "Comparto taxi a Cayma", cat: "transporte", x: 75, y: 11 },
-  { text: "Cargador tipo C en la biblio", cat: "ayuda", x: 89, y: 25 },
+  { text: "Alguien para almorzar? Estoy en hueco", cat: "social", x: 46, y: 15 },
+  { text: "¿Dónde hay espacio en la cafetería?", cat: "ayuda", x: 75, y: 11 },
+  { text: "Fulbito 5 v 5, faltan 2", cat: "social", x: 89, y: 25 },
 ];
 
 export function LiveMap() {
@@ -139,13 +142,13 @@ export function LiveMap() {
         ))}
       </div>
 
-      <div className="hidden sm:block lg:hidden">
+      <div className="hidden">
         {PINS_MOBILE.map((p, i) => (
           <PinBubble key={p.text} pin={p} index={i} />
         ))}
       </div>
 
-      <span className="wp-ping hidden lg:block" style={{ left: "73%", top: "54%" }} aria-hidden />
+      <span className="wp-ping hidden lg:block" style={{ left: "73%", top: "52%" }} aria-hidden />
       <span className="wp-ping lg:hidden" style={{ left: "63%", top: "22%" }} aria-hidden />
     </div>
   );

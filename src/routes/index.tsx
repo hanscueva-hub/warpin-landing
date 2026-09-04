@@ -7,9 +7,7 @@ import { InteractionSection } from "@/components/warpin/InteractionSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { HuecoSection } from "@/components/landing/HuecoSection";
 import { AccordionSection } from "@/components/landing/AccordionSection";
-import { PrivacySection } from "@/components/landing/PrivacySection";
 import { ZonaCeroSection } from "@/components/landing/ZonaCeroSection";
-import { DropsSection } from "@/components/landing/DropsSection";
 import { FounderSection } from "@/components/landing/FounderSection";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { FAQSection, faqs } from "@/components/landing/FAQSection";
@@ -103,9 +101,7 @@ function Landing() {
         <HowItWorksSection />
         <HuecoSection />
         <AccordionSection />
-        <PrivacySection />
         <ZonaCeroSection />
-        <DropsSection />
         <FounderSection />
         <TestimonialsSection />
         <FinalCTA />

@@ -71,7 +71,7 @@ export function StoreButtons({
           }`}
         >
           <LockIcon className="h-3.5 w-3.5 shrink-0" />
-          <span>Se abren el {LAUNCH_DATE_LABEL} a las&nbsp;{LAUNCH_TIME_LABEL}</span>
+          <span>Se abren el {LAUNCH_DATE_LABEL}, {LAUNCH_TIME_LABEL} (Perú)</span>
         </p>
       )}
     </div>

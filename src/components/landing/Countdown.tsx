@@ -1,5 +1,4 @@
 import { useCountdown } from "@/hooks/use-countdown";
-import { LAUNCH_DATE_LABEL, LAUNCH_TIME_LABEL } from "@/lib/launch";
 
 const CELLS = [
   { key: "days", label: "días" },
@@ -67,9 +66,6 @@ export function Countdown({ size = "lg" }: { size?: "lg" | "sm" }) {
         ))}
       </div>
 
-      <p className="mt-2.5 text-[12.5px] text-white/50">
-        {LAUNCH_DATE_LABEL}, {LAUNCH_TIME_LABEL} · hora de Perú
-      </p>
     </div>
   );
 }

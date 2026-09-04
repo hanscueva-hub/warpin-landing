@@ -1,181 +1,130 @@
-import { motion } from "framer-motion";
-import { ArrowLeft, ArrowUp, Check, GraduationCap, Lock, Sparkles } from "lucide-react";
+import { Check, Lock } from "lucide-react";
+import { ACCESOS_REDONDEADO, WHATSAPP_URL } from "@/lib/launch";
 
-const basicBenefits = [
-  'Título "Miembro Fundador" de por vida',
-  "Acceso a la comunidad beta de WhatsApp",
-  "Avisos de drops de acceso prioritario",
-  "Soporte inicial de la comunidad",
+const TITULOS = [
+  {
+    nombre: "Miembro Fundador",
+    quienes: "Entraron al grupo cuando Warpin todavía no existía.",
+    beneficios: [
+      'Título "Miembro Fundador" de por vida, visible en su perfil',
+      "Acceso a la comunidad beta",
+      "Soporte directo desde el primer día",
+    ],
+  },
+  {
+    nombre: "Fundador Élite",
+    quienes: "Los primeros 300. Se agotaron antes del lanzamiento.",
+    beneficios: [
+      'Título "Fundador Élite" destacado en el mapa y en su perfil',
+      "Acceso anticipado prioritario",
+      "Su opinión decide las primeras funciones que se construyen",
+    ],
+    destacado: true,
+  },
 ];
 
-const eliteBenefits = [
-  'Título "Fundador Élite" destacado y llamativo',
-  "Acceso anticipado prioritario al lanzamiento",
-  "Reportes prioritarios directos en la app",
-  "Tu feedback define las primeras funciones",
-  "Comunidad beta exclusiva de fundadores",
-];
-
-const WHATSAPP_URL = "https://chat.whatsapp.com/IK4zPo8yN4gIc9Y5RY1ecq";
-const CAMPUS_SURVEY_URL = "https://tally.so/r/WOqWOk";
-
+/**
+ * Los títulos de fundador ya no se pueden reclamar. La sección deja de ser
+ * una oferta y pasa a ser lo que realmente es: el reconocimiento a la gente
+ * que se apuntó antes de que hubiera una app que descargar.
+ */
 export function FounderSection() {
   return (
-    <section id="fundador" className="relative px-6 py-24">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/2 top-1/2 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/15 blur-[150px]" />
-      </div>
+    <section id="fundador" className="relative overflow-hidden px-6 py-24 sm:py-28">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/3 h-[38rem] w-[38rem] -translate-x-1/2 rounded-full opacity-60"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--magenta) 18%, transparent), transparent 65%)",
+        }}
+      />
 
       <div className="relative mx-auto max-w-5xl">
-        <div className="text-center mb-12">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/80 backdrop-blur-md">
-            ✨ Últimos cupos · Primera generación
-          </div>
-          <h2 className="text-balance text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl">
-            Elige tu estatus <span className="bg-gradient-to-r from-cyan-400 to-fuchsia-500 bg-clip-text text-transparent">dentro de la app</span>
+        {/* El anuncio: lo primero y lo más grande de la sección */}
+        <div className="text-center">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40">
+            Títulos de fundador
+          </p>
+
+          <h2
+            className="mt-4 font-display text-[4.2rem] font-extrabold uppercase leading-[0.84] tracking-[-0.055em] sm:text-[7rem] lg:text-[9rem]"
+            style={{
+              // Relleno fantasma + contorno: si el navegador no soporta el
+              // contorno, la palabra igual se lee.
+              color: "color-mix(in oklab, var(--magenta) 16%, transparent)",
+              WebkitTextStroke: "2px color-mix(in oklab, var(--magenta) 75%, transparent)",
+            }}
+          >
+            <span className="sr-only">Títulos de fundador: </span>Cerrado
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-gray-300 sm:text-lg">
-            Los cupos de Fundador Élite ya se agotaron. Todavía puedes entrar como Miembro Fundador y asegurar tu título antes del lanzamiento.
+
+          <p className="mx-auto mt-7 max-w-[46ch] text-base leading-relaxed text-white/70 sm:text-[17px]">
+            <span className="font-semibold text-white">
+              Más de 1.000 personas ya reclamaron su título
+            </span>{" "}
+            de Miembro Fundador o Fundador Élite, por haberse unido al grupo antes de que Warpin
+            existiera. Esos títulos quedan en su perfil para siempre y ya no se entregan más.
+          </p>
+
+          <p className="mx-auto mt-4 max-w-[46ch] text-[14.5px] leading-relaxed text-white/45">
+            Si llegaste ahora, no te pierdes la app: entras el día del lanzamiento como todos, solo
+            que sin el título.
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Card A — Miembro Fundador (ahora la opción destacada) */}
-          <motion.div
-            id="miembro-fundador"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="glass-strong gradient-border relative flex scroll-mt-28 flex-col justify-between rounded-3xl p-8 ring-1 ring-primary/30 transition-shadow target:ring-2 target:ring-cyan-400"
-          >
-            <div className="pointer-events-none absolute -inset-px -z-10 rounded-3xl bg-gradient-to-br from-primary/20 via-transparent to-accent/20 blur-2xl" />
-
-            <div>
-              <div className="flex items-center justify-between gap-3">
-                <span className="inline-flex w-fit items-center gap-1 rounded-full bg-gradient-brand px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-glow">
-                  <Sparkles className="h-3 w-3 text-yellow-300" /> Disponible ahora
-                </span>
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  Comunidad Beta
+        {/* Qué eran esos títulos, ya en pasado */}
+        <div className="mt-14 grid gap-5 md:grid-cols-2">
+          {TITULOS.map((t) => (
+            <div
+              key={t.nombre}
+              className={`relative overflow-hidden rounded-3xl border p-7 ${
+                t.destacado
+                  ? "border-[color-mix(in_oklab,var(--magenta)_28%,transparent)] bg-[color-mix(in_oklab,var(--magenta)_7%,#0E0C18)]"
+                  : "border-white/10 bg-white/[0.03]"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="font-display text-xl font-bold tracking-tight text-white">
+                    {t.nombre}
+                  </h3>
+                  <p className="mt-1.5 max-w-[30ch] text-[13.5px] leading-relaxed text-white/50">
+                    {t.quienes}
+                  </p>
+                </div>
+                <span className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/12 bg-white/[0.06] px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-wider text-white/55">
+                  <Lock className="h-3 w-3" />
+                  Agotado
                 </span>
               </div>
 
-              <h3 className="mt-4 text-2xl font-extrabold text-white sm:text-[26px]">
-                Miembro Fundador
-              </h3>
-              <p className="mt-3 text-sm text-gray-300 sm:text-[15px]">
-                Entra al grupo de WhatsApp y asegura tu título antes del lanzamiento. Ahí anunciamos primero los códigos de acceso.
-              </p>
-
-              <ul className="mt-6 space-y-3 text-left">
-                {basicBenefits.map((b) => (
-                  <li key={b} className="flex items-start gap-2.5 text-sm text-foreground/90">
-                    <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-cyan-400/20">
-                      <Check className="h-3 w-3 text-cyan-400" strokeWidth={3} />
-                    </span>
-                    <span>{b}</span>
+              <ul className="mt-6 flex flex-col gap-3 border-t border-white/[0.07] pt-5">
+                {t.beneficios.map((b) => (
+                  <li key={b} className="flex items-start gap-2.5 text-[14px] leading-snug text-white/65">
+                    <Check
+                      className="mt-0.5 h-4 w-4 shrink-0"
+                      style={{ color: t.destacado ? "var(--magenta)" : "var(--cyan)" }}
+                    />
+                    {b}
                   </li>
                 ))}
               </ul>
             </div>
-
-            <motion.a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-brand px-6 py-4 text-sm font-bold text-white shadow-glow transition-transform hover:scale-[1.02]"
-            >
-              💬 Unirme a la Comunidad
-            </motion.a>
-          </motion.div>
-
-          {/* Card B — Fundador Élite (cupos agotados) */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="glass relative flex flex-col justify-between rounded-3xl border border-white/5 p-8"
-          >
-            <div>
-              <div className="flex items-center justify-between gap-3">
-                <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white/50">
-                  <Lock className="h-3 w-3" strokeWidth={2.5} /> Cupos agotados
-                </span>
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-white/30">
-                  Acceso Élite
-                </span>
-              </div>
-
-              <h3 className="mt-4 text-2xl font-extrabold text-white/50 sm:text-[26px]">
-                Fundador Élite
-              </h3>
-              <p className="mt-3 text-sm text-white/50 sm:text-[15px]">
-                El título de Fundador Élite ya se llenó. Pero todavía puedes asegurar el tuyo como{" "}
-                <span className="font-semibold text-white/70">Miembro Fundador</span>.
-              </p>
-
-              <ul className="mt-6 space-y-3 text-left">
-                {eliteBenefits.map((b) => (
-                  <li key={b} className="flex items-start gap-2.5 text-sm text-white/30">
-                    <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-white/5">
-                      <Lock className="h-2.5 w-2.5 text-white/40" strokeWidth={2.5} />
-                    </span>
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <motion.a
-              href="#miembro-fundador"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-4 text-sm font-bold text-white/90 backdrop-blur transition-colors hover:bg-white/10"
-            >
-              <ArrowUp className="h-4 w-4 md:hidden" strokeWidth={2.5} />
-              <ArrowLeft className="hidden h-4 w-4 md:inline" strokeWidth={2.5} />
-              Quiero ser Miembro Fundador
-            </motion.a>
-          </motion.div>
+          ))}
         </div>
 
-        {/* Postulación de campus */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="glass mt-6 flex flex-col items-center gap-5 rounded-3xl p-8 text-center sm:flex-row sm:justify-between sm:text-left"
-        >
-          <div className="flex items-start gap-4">
-            <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-cyan-400/15">
-              <GraduationCap className="h-5 w-5 text-cyan-400" />
-            </span>
-            <div>
-              <h3 className="text-lg font-extrabold text-white sm:text-xl">
-                ¿Quieres que tu universidad sea la próxima?
-              </h3>
-              <p className="mt-1.5 max-w-lg text-sm text-gray-300">
-                WARPIN arranca en la UCSM, pero vamos campus por campus. Postula el tuyo y llegamos ahí.
-              </p>
-            </div>
-          </div>
-
-          <motion.a
-            href={CAMPUS_SURVEY_URL}
+        <p className="mt-10 text-center text-[13.5px] text-white/40">
+          {ACCESOS_REDONDEADO} accesos reclamados ·{" "}
+          <a
+            href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex flex-shrink-0 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-bold text-white backdrop-blur transition-colors hover:bg-white/10"
+            className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/75"
           >
-            Postular mi universidad →
-          </motion.a>
-        </motion.div>
+            la comunidad sigue abierta
+          </a>
+        </p>
       </div>
     </section>
   );
