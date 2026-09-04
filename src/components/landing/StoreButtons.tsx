@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { APP_STORE_URL, LAUNCH_DATE_LABEL, LAUNCH_TIME_LABEL, PLAY_STORE_URL } from "@/lib/launch";
-import { useCountdown } from "@/hooks/use-countdown";
+import { APP_STORE_URL, PLAY_STORE_URL, TIENDA_DISPONIBLE } from "@/lib/launch";
 
 type Platform = "ios" | "android" | "unknown";
 
@@ -18,7 +17,10 @@ function detectPlatform(): Platform {
  * Los dos botones de tienda, siempre los dos visibles y del mismo tamaño.
  * El de la plataforma del visitante se resalta; el otro queda en vidrio oscuro,
  * nunca reducido a un enlace de texto.
- * Mientras no llegue la hora de lanzamiento los dos quedan bloqueados.
+ *
+ * La app ya se puede instalar: lo que falta hasta el 15 no es la descarga sino
+ * poder publicar en el mapa. Por eso los botones ya no están bloqueados — solo
+ * lo está la tienda que todavía no reparte (ver TIENDA_DISPONIBLE).
  */
 export function StoreButtons({
   align = "start",
@@ -28,8 +30,6 @@ export function StoreButtons({
   size?: "lg" | "md";
 }) {
   const [platform, setPlatform] = useState<Platform>("unknown");
-  const left = useCountdown();
-  const open = left?.open ?? false;
 
   useEffect(() => setPlatform(detectPlatform()), []);
 
@@ -40,38 +40,42 @@ export function StoreButtons({
       icon: <AppleIcon />,
       top: "Descárgala en el",
       name: "App Store",
+      disponible: TIENDA_DISPONIBLE.ios,
     },
     {
       key: "android" as const,
       href: PLAY_STORE_URL,
       icon: <PlayIcon />,
-      top: "Disponible en",
+      top: "Muy pronto en",
       name: "Google Play",
+      disponible: TIENDA_DISPONIBLE.android,
     },
   ];
+
+  const faltaAlguna = buttons.some((b) => !b.disponible);
 
   return (
     <div className={align === "center" ? "flex flex-col items-center" : "flex flex-col items-start"}>
       <div className={`flex flex-wrap gap-3 ${align === "center" ? "justify-center" : ""}`}>
-        {buttons.map(({ key, ...rest }) => (
+        {buttons.map(({ key, disponible, ...rest }) => (
           <StoreButton
             key={key}
             {...rest}
-            highlighted={platform === key}
-            locked={!open}
+            highlighted={platform === key && disponible}
+            locked={!disponible}
             size={size}
           />
         ))}
       </div>
 
-      {!open && (
+      {faltaAlguna && (
         <p
           className={`mt-3 flex items-center gap-2 text-[12.5px] text-white/45 ${
             align === "center" ? "justify-center" : ""
           }`}
         >
           <LockIcon className="h-3.5 w-3.5 shrink-0" />
-          <span>Se abren el {LAUNCH_DATE_LABEL}, {LAUNCH_TIME_LABEL} (Perú)</span>
+          <span>En Android todavía estamos terminando las pruebas</span>
         </p>
       )}
     </div>
@@ -133,7 +137,7 @@ function StoreButton({
     return (
       <span
         aria-disabled="true"
-        title={`Disponible el ${LAUNCH_DATE_LABEL} a las ${LAUNCH_TIME_LABEL}`}
+        title="Todavía no disponible en Google Play"
         className={`${shell} ${skin} ${dim} cursor-not-allowed select-none`}
         style={highlightStyle}
       >

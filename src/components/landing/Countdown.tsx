@@ -1,4 +1,5 @@
 import { useCountdown } from "@/hooks/use-countdown";
+import { LAUNCH_DATE_LABEL, LAUNCH_TIME_LABEL } from "@/lib/launch";
 
 const CELLS = [
   { key: "days", label: "días" },
@@ -25,7 +26,7 @@ export function Countdown({ size = "lg" }: { size?: "lg" | "sm" }) {
           <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-[var(--cyan)]" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--cyan)]" />
         </span>
-        Warpin ya está abierto. Descárgala.
+        El mapa ya está encendido. Publica lo que necesites.
       </div>
     );
   }
@@ -42,7 +43,7 @@ export function Countdown({ size = "lg" }: { size?: "lg" | "sm" }) {
   return (
     <div>
       <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
-        Warpin abre en
+        El mapa se enciende en
       </p>
 
       <div className="flex gap-2 sm:gap-2.5" role="timer" aria-live="off">
@@ -66,6 +67,10 @@ export function Countdown({ size = "lg" }: { size?: "lg" | "sm" }) {
         ))}
       </div>
 
+      <p className="mt-3 max-w-[34ch] text-[12.5px] leading-relaxed text-white/50">
+        El {LAUNCH_DATE_LABEL} a las {LAUNCH_TIME_LABEL} todos empiezan a publicar.
+        <span className="text-white/35"> Instálala mientras tanto.</span>
+      </p>
     </div>
   );
 }

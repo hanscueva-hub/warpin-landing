@@ -2,6 +2,9 @@ import { Check, Lock } from "lucide-react";
 import { LAUNCH_DATE_LABEL, WHATSAPP_URL } from "@/lib/launch";
 import { StoreButtons } from "./StoreButtons";
 
+/** Rangos que se ganan usando la app, de menor a mayor. */
+const RANGOS = ["Colaborador", "Popular", "Alma Social", "Leyenda"];
+
 const TITULOS = [
   {
     nombre: "Miembro Fundador",
@@ -128,9 +131,33 @@ export function FounderSection() {
                 a gente que está cerca. El {LAUNCH_DATE_LABEL} todos arrancan de cero el mismo día —
                 y el que se mueve primero, llega primero.
               </p>
-              <p className="mt-3 text-[14px] leading-relaxed text-white/40">
-                Tu título se ve en tu perfil y al costado de cada pin que publicas.
-              </p>
+              <div className="mt-6">
+                <div className="flex flex-wrap items-center gap-2">
+                  {RANGOS.map((r, i) => (
+                    <span key={r} className="flex items-center gap-2">
+                      <span
+                        className="rounded-full border px-3 py-1.5 text-[12.5px] font-semibold"
+                        style={{
+                          color: "var(--cyan)",
+                          borderColor: "color-mix(in oklab, var(--cyan) 30%, transparent)",
+                          background: "color-mix(in oklab, var(--cyan) 9%, transparent)",
+                        }}
+                      >
+                        {r}
+                      </span>
+                      {i < RANGOS.length - 1 && (
+                        <span aria-hidden className="text-white/20">
+                          →
+                        </span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-3 text-[14px] leading-relaxed text-white/50">
+                  Podrás obtener estos y otros títulos similares. Se ven en tu perfil y al costado
+                  de cada pin que publicas.
+                </p>
+              </div>
             </div>
 
             <div className="lg:shrink-0">
