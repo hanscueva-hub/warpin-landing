@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { StoreButtons } from "./StoreButtons";
-import { WHATSAPP_URL } from "@/lib/launch";
+import { ACCESOS_REDONDEADO, WHATSAPP_URL } from "@/lib/launch";
 
 /* ─────────────────────────────────────────────
    FinalCTA
@@ -40,7 +40,7 @@ export function FinalCTA() {
               />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            ✨ 779 accesos ya reclamados en Arequipa
+            ✨ {ACCESOS_REDONDEADO} accesos ya reclamados
           </div>
         </motion.div>
 

@@ -1,5 +1,6 @@
 import { Check, Lock } from "lucide-react";
-import { ACCESOS_REDONDEADO, WHATSAPP_URL } from "@/lib/launch";
+import { LAUNCH_DATE_LABEL, WHATSAPP_URL } from "@/lib/launch";
+import { StoreButtons } from "./StoreButtons";
 
 const TITULOS = [
   {
@@ -67,10 +68,6 @@ export function FounderSection() {
             existiera. Esos títulos quedan en su perfil para siempre y ya no se entregan más.
           </p>
 
-          <p className="mx-auto mt-4 max-w-[46ch] text-[14.5px] leading-relaxed text-white/45">
-            Si llegaste ahora, no te pierdes la app: entras el día del lanzamiento como todos, solo
-            que sin el título.
-          </p>
         </div>
 
         {/* Qué eran esos títulos, ya en pasado */}
@@ -114,17 +111,41 @@ export function FounderSection() {
           ))}
         </div>
 
-        <p className="mt-10 text-center text-[13.5px] text-white/40">
-          {ACCESOS_REDONDEADO} accesos reclamados ·{" "}
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/75"
-          >
-            la comunidad sigue abierta
-          </a>
-        </p>
+        {/* Lo importante de esta sección no es lo que se cerró, sino lo que sigue
+            abierto: quien llega ahora todavía puede ganarse sus propios títulos. */}
+        <div className="mt-12 overflow-hidden rounded-3xl border border-[color-mix(in_oklab,var(--cyan)_22%,transparent)] bg-[color-mix(in_oklab,var(--cyan)_5%,#0B0A12)] p-8 sm:p-10">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--cyan)]">
+                Si llegaste ahora
+              </p>
+              <h3 className="mt-3 text-balance font-display text-[1.75rem] font-bold leading-[1.1] tracking-[-0.03em] text-white sm:text-[2.1rem]">
+                Los de fundador se cerraron.{" "}
+                <span className="text-white/45">Los demás no.</span>
+              </h3>
+              <p className="mt-4 max-w-[52ch] text-[15.5px] leading-relaxed text-white/65">
+                Dentro de Warpin los títulos se ganan usándola: publicando, respondiendo, ayudando
+                a gente que está cerca. El {LAUNCH_DATE_LABEL} todos arrancan de cero el mismo día —
+                y el que se mueve primero, llega primero.
+              </p>
+              <p className="mt-3 text-[14px] leading-relaxed text-white/40">
+                Tu título se ve en tu perfil y al costado de cada pin que publicas.
+              </p>
+            </div>
+
+            <div className="lg:shrink-0">
+              <StoreButtons size="md" />
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-block text-[13px] text-white/45 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/80"
+              >
+                O entra ya a la comunidad de WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
