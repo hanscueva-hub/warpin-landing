@@ -60,6 +60,7 @@ const CASOS: Caso[] = [
     titulo: "Alguien que ya está ahí te lo dice",
     texto:
       "Si hay mesa en la cafetería, si el salón de estudio está lleno, si vale la pena cruzar el campus. Te ahorras el viaje.",
+    imagen: "/mascota/escena-espacio.webp",
     pin: {
       categoria: "Ayuda rápida",
       color: "#2BD980",
@@ -189,14 +190,9 @@ export function WhatIsSection() {
                   className="h-44 w-auto object-contain motion-safe:animate-fade-up sm:h-56"
                 />
               ) : (
-                <div className="flex h-44 items-center sm:h-56">
-                  <span
-                    className="rounded-full border border-dashed px-4 py-2 text-[12px] text-white/35"
-                    style={{ borderColor: `color-mix(in srgb, ${caso.pin.color} 35%, transparent)` }}
-                  >
-                    Ilustración en camino
-                  </span>
-                </div>
+                // Sin ilustración: en vez de un hueco marcado, el pin sube al
+                // centro y la escena se sostiene sola.
+                <div aria-hidden className="h-8 sm:h-12" />
               )}
 
               <PinCard key={caso.id} caso={caso} />
