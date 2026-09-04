@@ -1,155 +1,89 @@
-import { motion } from "framer-motion";
-import { BackgroundBlobs } from "./BackgroundBlobs";
-import warpinLogo from "@/assets/warpin-logo.png";
+import { LiveMap } from "./LiveMap";
+import { Countdown } from "./Countdown";
+import { StoreButtons } from "./StoreButtons";
 
-const avatars = [
-  "linear-gradient(135deg,#f472b6,#a855f7)",
-  "linear-gradient(135deg,#22d3ee,#3b82f6)",
-  "linear-gradient(135deg,#fb923c,#ef4444)",
-  "linear-gradient(135deg,#4ade80,#22d3ee)",
+const FACTS = [
+  { value: "Correo institucional", label: "para poder entrar" },
+  { value: "0.5 – 3 km", label: "radio del radar" },
+  { value: "Ubicación protegida", label: "en cada publicación" },
+  { value: "Todo expira", label: "sin historial público" },
 ];
 
 export function Hero() {
   return (
-    <section
-      className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24 pb-16"
-      style={{ background: "var(--gradient-hero)" }}
-    >
-      <BackgroundBlobs />
-      <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: -14 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="relative mb-5"
-        >
-          <span
-            aria-hidden
-            className="absolute -inset-6 -z-10 rounded-full opacity-70 blur-2xl"
-            style={{ background: "radial-gradient(circle, var(--magenta), var(--cyan), transparent 70%)" }}
-          />
-          <img
-            src={warpinLogo}
-            alt="WARPIN"
-            className="h-20 w-20 rounded-2xl object-cover shadow-[inset_0_1px_0_oklch(1_0_0/0.3),0_8px_32px_-4px_oklch(0.6_0.23_305/0.6)] sm:h-24 sm:w-24"
-          />
-        </motion.div>
+    <section className="relative isolate min-h-[100svh] overflow-hidden bg-[#0A0910]">
+      {/* El producto es el fondo: mapa oscuro con pines reales */}
+      <LiveMap />
 
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="mb-6 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium text-white/85"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-neon-magenta opacity-75 animate-pulse-ring" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-magenta" />
-          </span>
-          Mapa en vivo · Arequipa
-        </motion.div>
+      {/* Velos que dejan leer el texto sin apagar el mapa */}
+      <div
+        aria-hidden
+        className="absolute inset-0 z-[1]"
+        style={{
+          background:
+            "radial-gradient(72% 92% at 74% 46%, transparent 38%, rgba(10,9,16,.88) 100%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 z-[2] bg-[linear-gradient(180deg,rgba(10,9,16,.80)_0%,rgba(10,9,16,.93)_34%,rgba(10,9,16,.97)_100%)] lg:bg-[linear-gradient(96deg,#0A0910_0%,rgba(10,9,16,.96)_34%,rgba(10,9,16,.55)_58%,rgba(10,9,16,.12)_76%,rgba(10,9,16,.6)_100%)]"
+      />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-balance text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
-        >
-          Estás a{" "}
-          <span className="text-gradient">500 metros de </span>
-          un plan,
-          <span className="text-gradient"> una ayuda </span>
-          o una respuesta.
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.25 }}
-          className="mt-6 max-w-2xl text-base text-gray-300 sm:text-lg md:text-xl"
-        >
-          Publica lo que necesitas o descubre lo que pasa cerca: planes, taxis compartidos, objetos perdidos y ayuda rápida. Warpin conecta estudiantes en tiempo real con opción de ubicación exacta o protegida.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-10"
-        >
-          <motion.a
-            href="https://chat.whatsapp.com/IK4zPo8yN4gIc9Y5RY1ecq"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            className="ios-button group relative inline-flex items-center justify-center rounded-full px-9 py-4 text-base font-semibold text-white transition-shadow sm:px-11 sm:py-5 sm:text-lg"
-          >
-            🚀 Asegura tu Acceso Anticipado
-          </motion.a>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-6 flex items-center gap-3"
-        >
-          <div className="flex -space-x-2">
-            {avatars.map((bg, i) => (
-              <div
-                key={i}
-                className="h-7 w-7 rounded-full border-2 border-background"
-                style={{ background: bg }}
-              />
-            ))}
-          </div>
-          <p className="text-xs text-gray-400 sm:text-sm">
-            Únete a los primeros miembros fundadores de Arequipa
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="mt-5 flex flex-wrap items-center justify-center gap-3"
-        >
-          {[
-            { icon: '🛡', text: 'Ubicación protegida' },
-            { icon: '⏱', text: 'Contenido efímero' },
-            { icon: '✓', text: 'Usuarios verificados' },
-          ].map((b) => (
-            <span
-              key={b.text}
-              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/60 backdrop-blur-sm"
-            >
-              <span>{b.icon}</span>
-              {b.text}
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-6 pt-[5.5rem] pb-[4.75rem]">
+        <div className="animate-fade-up max-w-[34rem]">
+          <span className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/[0.04] px-4 py-1.5 text-[13px] text-white/70 backdrop-blur-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-pulse-ring rounded-full bg-[var(--cyan)]" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--cyan)]" />
             </span>
-          ))}
-        </motion.div>
+            <span className="tabular-nums">779 accesos reclamados</span>
+            <span className="hidden sm:inline"> · UCSM Arequipa</span>
+          </span>
+
+          <h1 className="mt-6 text-balance font-display text-[2.05rem] font-bold leading-[1] sm:leading-[0.98] tracking-[-0.04em] text-white sm:text-[3.4rem] lg:text-[3.6rem]">
+            Mira qué está pasando en el campus{" "}
+            <span className="text-[var(--magenta)]">ahora mismo</span>.
+          </h1>
+
+          <p className="mt-4 max-w-[47ch] text-base leading-relaxed text-white/65 sm:text-[17px]">
+            Un cargador, apuntes de Cálculo, con quién compartir taxi.{" "}
+            <span className="hidden sm:inline">
+              Lo publicas, alguien cerca responde, y desaparece cuando expira.
+            </span>
+          </p>
+        </div>
+
+        <div
+          id="descargar"
+          className="animate-fade-up mt-8 flex flex-col gap-7 sm:flex-row sm:items-end sm:gap-10"
+          style={{ animationDelay: "0.12s" }}
+        >
+          <Countdown />
+          <div className="sm:pb-[26px]">
+            <StoreButtons />
+          </div>
+        </div>
+
+        <p
+          className="animate-fade-up mt-5 text-[13px] tracking-[0.02em] text-white/40"
+          style={{ animationDelay: "0.24s" }}
+        >
+          Solo estudiantes de la <span className="text-white/65">UCSM</span> ·{" "}
+          <span className="text-white/65">Verificados</span> ·{" "}
+          <span className="text-white/65">Sin spam</span>
+        </p>
       </div>
 
-      {/* Scroll hint */}
-      <motion.a
-        href="#como-funciona"
-        aria-label="Desplázate para descubrir más"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 text-white/60 hover:text-white"
-      >
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-1.5"
-        >
-          <span className="text-[10px] font-medium uppercase tracking-[0.18em]">Descubre más</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M6 9l6 6 6-6" />
-          </svg>
-        </motion.div>
-      </motion.a>
+      {/* Franja de datos al pie de la portada */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-white/[0.07] bg-gradient-to-t from-[#0A0910] to-transparent">
+        <div className="mx-auto flex max-w-6xl gap-x-8 gap-y-2 overflow-x-auto px-6 py-3.5 text-[12.5px] text-white/40 no-scrollbar">
+          {FACTS.map((f) => (
+            <span key={f.value} className="whitespace-nowrap">
+              <span className="font-medium text-white/70">{f.value}</span> {f.label}
+            </span>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

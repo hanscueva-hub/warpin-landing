@@ -31,9 +31,9 @@ export function TickerSection() {
       `}</style>
       <div className="relative -mt-2 overflow-hidden border-y border-white/5 bg-black/20 py-3 backdrop-blur">
         {/* Left fade */}
-        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-[#0f1421] to-transparent" />
+        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-[#0A0910] to-transparent" />
         {/* Right fade */}
-        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-[#0f1421] to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-[#0A0910] to-transparent" />
         <div className="ticker-track flex w-max gap-8 whitespace-nowrap text-xs font-medium text-foreground/80">
           {allItems.map((item, i) => (
             <span key={i} className="inline-flex items-center gap-2">
