@@ -1,106 +1,99 @@
-import { motion } from 'framer-motion';
-
-const testimonials = [
+/**
+ * Testimonios reales de la encuesta de validación (268 respuestas, jun–ago 2026).
+ * Son citas textuales y anónimas: no se inventan nombres ni caras.
+ * El orden no es casual — abre y cierra con socializar, que es el dolor #1.
+ */
+const CITAS = [
   {
-    name: 'Lucía M.',
-    role: '3er año · Ing. Sistemas · UCSM',
-    quote:
-      'Creo que me servirá muchísimo para encontrar gente con quien compartir taxi a Cayma saliendo de la U, sin tener que saturar los grupos ruidosos de WhatsApp.',
-    avatar: 'linear-gradient(135deg, #22d3ee, #8b5cf6)',
+    texto:
+      "El tener que hablarle a la gente cara a cara y que no te haga caso… por mensaje duele menos.",
+    contexto: "Sobre por qué cuesta dar el primer paso",
+    tema: "social" as const,
   },
   {
-    name: 'Andrés T.',
-    role: '2do año · Derecho · UCSM',
-    quote:
-      'Me encantaría usarla para armar grupos de estudio rápido. Sería genial publicar que buscas gente para un trabajo y recibir respuestas directas al instante.',
-    avatar: 'linear-gradient(135deg, #f472b6, #fb923c)',
+    texto:
+      "Encontrar gente que también tenga problemas para hacer amigos, y hacernos compañía en los ratos libres.",
+    contexto: "Al preguntar qué querría resolver",
+    tema: "social" as const,
   },
   {
-    name: 'Camila R.',
-    role: '4to año · Administración · UCSM',
-    quote:
-      'Si me olvido un cargador o necesito apuntes urgentes, esto me salvará la vida. Es una excelente idea para pedir ayuda rápida a personas que están en el campus.',
-    avatar: 'linear-gradient(135deg, #4ade80, #22d3ee)',
+    texto:
+      "Perdí un anillo con un significado especial en el baño del campus. Si regresaba a buscarlo, perdía mi clase.",
+    contexto: "Sobre una necesidad urgente en el campus",
+    tema: "ayuda" as const,
   },
   {
-    name: 'Diego H.',
-    role: '1er año · Medicina · UCSM',
-    quote:
-      'Pienso que servirá bastante para reportar objetos perdidos. Si pierdo mi carnet de la U, sería más fácil recuperarlo si alguien lo ve por la cafetería y lo publica.',
-    avatar: 'linear-gradient(135deg, #a78bfa, #ec4899)',
+    texto: "Poder ayudar a la gente, y que la cato se vuelva más unida.",
+    contexto: "Sobre qué esperaría de la app",
+    tema: "ayuda" as const,
   },
 ];
 
+const COLOR = {
+  social: "var(--magenta)",
+  ayuda: "#2BD980",
+};
+
+const ETIQUETA = {
+  social: "Socializar",
+  ayuda: "Ayuda rápida",
+};
+
 export function TestimonialsSection() {
   return (
-    <section id="testimonios" className="px-6 py-16 sm:py-20">
-      <div className="mx-auto max-w-4xl">
-        {/* Pill */}
-        <motion.div
-          className="flex justify-center mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-1.5 text-sm text-white/70">
-            Lo que dicen
-          </span>
-        </motion.div>
+    <section id="testimonios" className="px-6 py-24 sm:py-28">
+      <div className="mx-auto max-w-5xl">
+        <div className="max-w-[52ch]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40">
+            268 respuestas · encuesta de validación
+          </p>
+          <h2 className="mt-4 text-balance font-display text-[2rem] font-bold leading-[1.05] tracking-[-0.035em] text-white sm:text-[2.6rem]">
+            Warpin no salió de una lluvia de ideas.
+            <br />
+            <span className="text-white/40">Salió de lo que nos contaron.</span>
+          </h2>
+          <p className="mt-5 text-[15.5px] leading-relaxed text-white/55">
+            Estas son respuestas textuales de estudiantes, tal como las escribieron. Sin nombres,
+            porque así las dieron.
+          </p>
+        </div>
 
-        {/* Heading */}
-        <motion.h2
-          className="text-center text-3xl font-extrabold text-white sm:text-4xl mb-12 animate-reveal"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          Lo que opina la comunidad.{' '}
-          <span
-            className="bg-clip-text text-transparent"
-            style={{
-              backgroundImage: 'linear-gradient(135deg, #22d3ee, #8b5cf6)',
-            }}
-          >
-            Tú serás el siguiente.
-          </span>
-        </motion.h2>
-
-        {/* Cards grid */}
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 px-4 md:px-0">
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={i}
-              className="glass rounded-2xl md:rounded-3xl p-6 flex flex-col gap-4"
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 + i * 0.1 }}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+        <div className="mt-12 grid gap-5 sm:grid-cols-2">
+          {CITAS.map((c) => (
+            <figure
+              key={c.texto}
+              className="relative flex flex-col justify-between rounded-3xl border border-white/[0.09] bg-white/[0.025] p-7"
             >
-              {/* Quote mark */}
-              <div className="text-4xl text-white/15 font-serif leading-none select-none">&ldquo;</div>
+              <span
+                aria-hidden
+                className="absolute left-7 top-0 h-[3px] w-12 rounded-full"
+                style={{ background: COLOR[c.tema] }}
+              />
 
-              {/* Quote text */}
-              <p className="text-sm leading-relaxed text-white/75 italic flex-1">{t.quote}</p>
+              <blockquote className="text-[17px] leading-[1.5] text-white/85">
+                «{c.texto}»
+              </blockquote>
 
-              {/* Bottom row */}
-              <div className="flex items-center gap-3">
-                {/* Avatar */}
-                <div
-                  className="h-10 w-10 rounded-full flex-shrink-0"
-                  style={{ background: t.avatar }}
-                />
-                <div className="flex flex-col min-w-0">
-                  <span className="font-bold text-white text-sm truncate">{t.name}</span>
-                  <span className="text-xs text-white/50 truncate">{t.role}</span>
-                </div>
-                <div className="ml-auto text-yellow-400 text-xs tracking-tight">★★★★★</div>
-              </div>
-            </motion.div>
+              <figcaption className="mt-6 flex items-center gap-3 border-t border-white/[0.07] pt-4">
+                <span
+                  className="rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider"
+                  style={{
+                    color: COLOR[c.tema],
+                    background: `color-mix(in srgb, ${COLOR[c.tema]} 14%, transparent)`,
+                  }}
+                >
+                  {ETIQUETA[c.tema]}
+                </span>
+                <span className="text-[12.5px] text-white/40">{c.contexto}</span>
+              </figcaption>
+            </figure>
           ))}
         </div>
+
+        <p className="mt-8 text-[13.5px] text-white/35">
+          Encuesta aplicada entre junio y agosto de 2026. Las citas se transcribieron sin cambiar
+          lo que dijeron; solo se corrigió puntuación.
+        </p>
       </div>
     </section>
   );

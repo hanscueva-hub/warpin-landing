@@ -95,7 +95,7 @@ export function MockupScreen() {
       description: "Estoy en la biblioteca central, lo devuelvo en 1 hora porfa.",
       time: "45m restantes",
       distance: "A menos de 100m",
-      author: "Hans C.",
+      author: "Valeria M.",
       color: "#EF4444", // Rojo
       x: 51,
       y: 33,
@@ -110,7 +110,7 @@ export function MockupScreen() {
       description: "Estoy libre hasta las 2, avisen si bajan a la cafetería.",
       time: "58m restantes",
       distance: "A 879m",
-      author: "Hans C.",
+      author: "Diego R.",
       color: "#FF5722", // Naranja
       x: 42,
       y: 45,
@@ -126,7 +126,7 @@ export function MockupScreen() {
       description: "Salgo en 10 minutos, somos 2 personas por ahora.",
       time: "25m restantes",
       distance: "A 860m",
-      author: "Hans C.",
+      author: "Camila P.",
       color: "#00E5FF", // Celeste
       x: 40,
       y: 52,
@@ -141,7 +141,7 @@ export function MockupScreen() {
       description: "Dejen canciones random para aguantar la amanecida de estudio.",
       time: "56m restantes",
       distance: "A 860m",
-      author: "Hans C.",
+      author: "Sebastián T.",
       color: "#A855F7", // Púrpura
       x: 44,
       y: 56,

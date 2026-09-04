@@ -30,3 +30,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.claude/
+
+# Canal de trabajo con Gemini (no va al despliegue)
+web_para_gemini.md
+web_de_gemini.md
+
+# Los JPG con fondo verde son el respaldo, no van al despliegue
+mascota-fuente/

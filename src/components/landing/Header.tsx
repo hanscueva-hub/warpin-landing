@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useCountdown } from "@/hooks/use-countdown";
 
 const navLinks = [
   { label: "Cómo funciona", href: "#como-funciona" },
   { label: "Categorías",    href: "#categorias" },
-  { label: "Privacidad",    href: "#privacidad" },
-  { label: "Únete",         href: "#fundador" },
+  { label: "Privacidad",    href: "/privacidad" },
+  { label: "Fundadores",    href: "#fundador" },
 ];
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const left = useCountdown();
 
   return (
     <header className="fixed top-3 left-0 right-0 z-50 px-4 md:top-5">
@@ -44,12 +46,26 @@ export function Header() {
         {/* Right side: Entrar button + hamburger */}
         <div className="flex items-center gap-2">
           <a
-            href="https://chat.whatsapp.com/IK4zPo8yN4gIc9Y5RY1ecq"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-full bg-white/10 px-3.5 py-1.5 text-[12px] font-semibold text-white shadow-[inset_0_1px_0_oklch(1_0_0/0.25)] transition-colors hover:bg-white/15"
+            href="#descargar"
+            className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-white/10 px-3 py-1.5 text-[12px] sm:px-3.5 font-semibold text-white shadow-[inset_0_1px_0_oklch(1_0_0/0.25)] transition-colors hover:bg-white/15"
           >
-            Entrar
+            {left?.open ? (
+              "Descargar"
+            ) : (
+              <>
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--cyan)]" />
+                <span className="tabular-nums">
+                  {left ? (
+                    <>
+                      <span className="hidden sm:inline">Faltan </span>
+                      {left.days} días
+                    </>
+                  ) : (
+                    "Muy pronto"
+                  )}
+                </span>
+              </>
+            )}
           </a>
 
           {/* Hamburger button — mobile only */}

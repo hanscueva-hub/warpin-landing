@@ -5,21 +5,21 @@ import { TickerSection } from "@/components/landing/TickerSection";
 import { WhatIsSection } from "@/components/landing/WhatIsSection";
 import { InteractionSection } from "@/components/warpin/InteractionSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
+import { HuecoSection } from "@/components/landing/HuecoSection";
 import { AccordionSection } from "@/components/landing/AccordionSection";
-import { PrivacySection } from "@/components/landing/PrivacySection";
 import { ZonaCeroSection } from "@/components/landing/ZonaCeroSection";
-import { DropsSection } from "@/components/landing/DropsSection";
 import { FounderSection } from "@/components/landing/FounderSection";
 import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { FAQSection, faqs } from "@/components/landing/FAQSection";
 import { FinalCTA, Footer } from "@/components/landing/FinalCTA";
 import { ScrollProgress } from "@/components/landing/ScrollProgress";
 import { useReveal } from "@/hooks/use-reveal";
+import { WHATSAPP_URL } from "@/lib/launch";
 
 const SITE_URL = "https://warpin.app";
 const PAGE_TITLE = "WARPIN — App social en tiempo real para universitarios | Arequipa";
 const PAGE_DESCRIPTION =
-  "Conoce estudiantes cerca de ti en tiempo real. Publica planes, comparte taxi, pide ayuda o encuentra objetos perdidos en tu campus. Beta en la UCSM, Arequipa.";
+  "El mapa en vivo de tu campus: pide un cargador, comparte taxi, entérate del plan que se armó a dos cuadras. Abre el 15 de setiembre en la UCSM, Arequipa. Solo estudiantes verificados.";
 
 /* Structured data — helps Google show rich results (FAQ dropdowns, app info). */
 const structuredData = {
@@ -81,7 +81,6 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const WHATSAPP_URL = "https://chat.whatsapp.com/IK4zPo8yN4gIc9Y5RY1ecq";
 
 function Landing() {
   useReveal();
@@ -100,10 +99,9 @@ function Landing() {
         <WhatIsSection />
         <InteractionSection />
         <HowItWorksSection />
+        <HuecoSection />
         <AccordionSection />
-        <PrivacySection />
         <ZonaCeroSection />
-        <DropsSection />
         <FounderSection />
         <TestimonialsSection />
         <FinalCTA />

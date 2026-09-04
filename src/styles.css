@@ -308,3 +308,17 @@
 .animate-radar-sweep          { transform-origin: center center; animation: radar-sweep 5s infinite linear; }
 .animate-ping-glow            { animation: ping-glow 2s infinite ease-out; }
 .animate-float-particle       { animation: float-particle 1.1s forwards cubic-bezier(0.25, 1, 0.5, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-float-pin,
+  .animate-float-pin-alt,
+  .animate-pulse-ring,
+  .animate-glow-pulse,
+  .animate-marquee,
+  .ticker-track {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

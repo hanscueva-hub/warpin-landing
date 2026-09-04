@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { StoreButtons } from "./StoreButtons";
+import { ACCESOS_REDONDEADO, WHATSAPP_URL } from "@/lib/launch";
 
 /* ─────────────────────────────────────────────
    FinalCTA
@@ -38,41 +40,50 @@ export function FinalCTA() {
               />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            ✨ +250 fundadores ya asegurados en Arequipa
+            ✨ {ACCESOS_REDONDEADO} accesos ya reclamados
           </div>
         </motion.div>
 
-        {/* CTA buttons */}
+        {/* Botones de tienda — tercera y última aparición */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.55, delay: 0.35 }}
-          className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          transition={{ duration: 0.55, delay: 0.3 }}
+          className="mt-8 flex justify-center"
         >
-          {/* Primary */}
-          <motion.a
-            href="#fundador"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            className="ios-button inline-flex items-center gap-2 rounded-full px-8 py-4 text-base font-bold text-white sm:px-10 sm:py-5 sm:text-lg"
-          >
-            🔥 Asegura tu acceso
-          </motion.a>
+          <StoreButtons align="center" />
+        </motion.div>
 
-          {/* Secondary — glass style */}
-          <motion.a
-            href="https://chat.whatsapp.com/IK4zPo8yN4gIc9Y5RY1ecq"
+        {/* La fórmula de cierre */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.45 }}
+          className="mt-10 font-display text-lg font-semibold tracking-tight text-white/80 sm:text-xl"
+        >
+          Solo estudiantes de la UCSM. Verificados. Sin spam.
+        </motion.p>
+
+        {/* WhatsApp queda como segunda opción, nunca compitiendo con la descarga */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.55 }}
+          className="mt-6"
+        >
+          <a
+            href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={{ scale: 1.04, backgroundColor: "rgba(255,255,255,0.10)" }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-md transition-colors sm:px-10 sm:py-5 sm:text-lg"
-            style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)" }}
+            className="text-sm text-white/45 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/80"
           >
-            💬 Unirme al grupo VIP
-          </motion.a>
+            Mientras tanto, entra a la Comunidad de WhatsApp
+          </a>
         </motion.div>
+
       </div>
     </section>
   );
