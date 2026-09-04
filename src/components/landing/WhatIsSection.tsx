@@ -56,7 +56,7 @@ const CASOS: Caso[] = [
   },
   {
     id: "espacio",
-    gatillo: "¿Habrá sitio o me voy a ir de gane?",
+    gatillo: "¿Habrá sitio o voy a ir para nada?",
     titulo: "Alguien que ya está ahí te lo dice",
     texto:
       "Si hay mesa en la cafetería, si el salón de estudio está lleno, si vale la pena cruzar el campus. Te ahorras el viaje.",

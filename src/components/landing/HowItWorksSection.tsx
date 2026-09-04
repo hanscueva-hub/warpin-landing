@@ -10,14 +10,14 @@ const PASOS: Paso[] = [
   {
     num: "01",
     titulo: "Descubre",
-    desc: "Abres y el mapa ya está lleno. Quién necesita algo, quién armó un plan, a cuántos metros está.",
+    desc: "Abre el mapa y mira los pines de gente alrededor tuyo. Quién armó un plan, quién necesita algo a metros de donde estás.",
     imagen: "/mascota/paso-1-descubre.webp",
     color: "#35D0F5",
   },
   {
     num: "02",
     titulo: "Publica",
-    desc: "Escribes qué necesitas y cuánto dura. Treinta segundos. Al expirar desaparece solo.",
+    desc: "Escribe lo que necesitas y cuánto dura. Los pines son efímeros: al expirar desaparecen solos.",
     imagen: "/mascota/paso-2-publica.webp",
     color: "#FF3D8A",
   },

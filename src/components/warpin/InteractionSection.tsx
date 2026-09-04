@@ -4,7 +4,7 @@ import {
   MapPin, Search, Bell, Plus, Home, Compass, MessageCircle, User,
   Eye, Filter, Send, MessageSquare, UserPlus, Inbox, Check, X, Sparkles,
 } from "lucide-react";
-import ucsmMap from "@/assets/ucsm-map.png";
+import { PhoneShell } from "@/components/landing/PhoneShell";
 
 type StepKey = 0 | 1 | 2 | 3 | 4 | 5;
 
@@ -149,35 +149,47 @@ export function InteractionSection() {
                     "linear-gradient(140deg, color-mix(in oklab, var(--magenta) 75%, transparent), color-mix(in oklab, var(--cyan) 75%, transparent))",
                 }}
               >
-                <div className="relative overflow-hidden rounded-[2.5rem] bg-[oklch(0.08_0.03_280)] p-2">
-                  <div className="absolute left-1/2 top-2 z-30 h-6 w-28 -translate-x-1/2 rounded-b-2xl bg-black" />
+                <PhoneShell
+                  className="cursor-pointer"
+                  onMouseDown={handleMouseDown}
+                  onTouchStart={handleTouchStart}
+                  onClick={handleScreenClick}
+                >
+                  {/* Captura real del mapa de la app, debajo de todo */}
+                  <img
+                    src="/mapa-app.webp"
+                    alt=""
+                    width={720}
+                    height={962}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
                   <div
-                    onMouseDown={handleMouseDown}
-                    onTouchStart={handleTouchStart}
-                    onClick={handleScreenClick}
-                    className="relative aspect-[9/19] w-full overflow-hidden rounded-[2.1rem] cursor-pointer"
+                    aria-hidden
+                    className="absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(80% 60% at 30% 10%, color-mix(in oklab, var(--magenta) 28%, transparent), transparent 60%), radial-gradient(60% 50% at 90% 90%, color-mix(in oklab, var(--cyan) 22%, transparent), transparent 60%), linear-gradient(180deg, #14101e, #0c0a14)",
+                        "radial-gradient(70% 45% at 30% 8%, color-mix(in oklab, var(--magenta) 16%, transparent), transparent 62%), radial-gradient(60% 40% at 92% 88%, color-mix(in oklab, var(--cyan) 12%, transparent), transparent 62%)",
                     }}
-                  >
-                    <PhoneChrome />
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={step}
-                        initial={{ opacity: 0, scale: 0.96, y: 14 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 1.02, y: -10 }}
-                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                        className="absolute inset-0 pt-16"
-                      >
-                        <StepScreen step={step} />
-                      </motion.div>
-                    </AnimatePresence>
+                  />
 
-                    <PhoneTabBar />
-                  </div>
-                </div>
+                  <PhoneChrome />
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={step}
+                      initial={{ opacity: 0, scale: 0.96, y: 14 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 1.02, y: -10 }}
+                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute inset-0 pt-[4.6rem]"
+                    >
+                      <StepScreen step={step} />
+                    </motion.div>
+                  </AnimatePresence>
+
+                  <PhoneTabBar />
+                </PhoneShell>
               </motion.div>
               <MobileStepCard
                 stepIndex={step}
@@ -273,15 +285,7 @@ export function InteractionSection() {
 function PhoneChrome() {
   return (
     <>
-      <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 pt-3 text-[10px] font-semibold text-white/90">
-        <span>9:41</span>
-        <span className="flex items-center gap-1">
-          <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-          <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-          <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
-        </span>
-      </div>
-      <div className="absolute inset-x-0 top-7 z-20 mt-2 flex items-center justify-between px-4">
+      <div className="absolute inset-x-0 top-11 z-20 flex items-center justify-between px-4">
         <div className="flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 backdrop-blur">
           <MapPin size={12} className="text-magenta" />
           <span className="text-[11px] font-medium text-white">UCSM · 0.8 km</span>
@@ -302,7 +306,7 @@ function PhoneChrome() {
 
 function PhoneTabBar() {
   return (
-    <div className="absolute inset-x-0 bottom-0 z-20 border-t border-white/5 bg-black/30 px-6 py-3 backdrop-blur-xl">
+    <div className="absolute inset-x-0 bottom-0 z-20 border-t border-white/5 bg-black/45 px-6 pb-5 pt-3 backdrop-blur-xl">
       <div className="flex items-center justify-between text-white/50">
         <Home size={16} className="text-white" />
         <Compass size={16} />
@@ -325,20 +329,18 @@ function StepScreen({ step }: { step: StepKey }) {
 }
 
 /* ----- shared mini map ----- */
+/**
+ * Transparente a propósito: el mapa que se ve es la captura real de la app, que
+ * pinta la carcasa por detrás. Antes acá había una captura de Google Maps en
+ * modo claro, invertida por CSS para que pareciera oscura.
+ */
 function MiniMap({ children }: { children?: React.ReactNode }) {
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#0c0a14]">
-      {/* Dark styled Google Maps image */}
-      <img
-        src={ucsmMap}
-        alt="Mapa del campus de la UCSM en Arequipa con pines de estudiantes cerca"
-        className="absolute inset-0 h-full w-full object-cover opacity-38"
-        style={{
-          filter: "invert(1) hue-rotate(215deg) brightness(0.42) contrast(1.35) saturate(0.85)",
-        }}
+    <div className="relative h-full w-full overflow-hidden">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B0A12]/85 via-transparent to-[#0B0A12]/45"
       />
-      {/* Glow overlay to match page background color */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0c0a14]/90 via-transparent to-[#0c0a14]/40 pointer-events-none" />
 
       {/* Range circle (user) */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
@@ -417,12 +419,13 @@ function ScreenDiscover() {
     return () => clearTimeout(timeoutId);
   }, []);
 
+  // Mismo enfoque que el resto de la web: socializar y ayuda rápida.
   const pins = [
-    { x: "24%", y: "22%", emoji: "🚕", tone: "cyan" as const, msg: "Comparto taxi a Cayma" },
-    { x: "38%", y: "78%", emoji: "🚨", tone: "red" as const, msg: "¿Dónde queda el pabellón de medicina?" },
-    { x: "18%", y: "65%", emoji: "🎲", tone: "magenta" as const, msg: "Recomendaciones de música indie" },
-    { x: "42%", y: "52%", emoji: "🍻", tone: "orange" as const, msg: "Alguien almuerzo por la U?" },
-    { x: "32%", y: "34%", emoji: "💬", tone: "magenta" as const, msg: "Conversar un rato" },
+    { x: "24%", y: "22%", emoji: "🔌", tone: "cyan" as const, msg: "Cargador tipo C, biblio" },
+    { x: "38%", y: "78%", emoji: "📐", tone: "red" as const, msg: "¿Me enseñas Cálculo II?" },
+    { x: "18%", y: "65%", emoji: "☕", tone: "magenta" as const, msg: "¿Hay sitio en la cafetería?" },
+    { x: "42%", y: "52%", emoji: "🍽️", tone: "orange" as const, msg: "¿Alguien para almorzar?" },
+    { x: "32%", y: "34%", emoji: "⚽", tone: "magenta" as const, msg: "Fulbito 5 v 5, faltan 2" },
   ];
 
   return (
